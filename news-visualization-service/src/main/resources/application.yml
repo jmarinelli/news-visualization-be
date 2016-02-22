@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  context-path: /news-visualization/api
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
