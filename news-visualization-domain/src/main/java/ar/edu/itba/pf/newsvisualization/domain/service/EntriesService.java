@@ -58,6 +58,8 @@ public class EntriesService {
             });
         }
 
+        dateCountByMedia.values().forEach(mc -> mc.sort());
+
         return dateCountByMedia.values().stream().collect(Collectors.toList());
     }
 
