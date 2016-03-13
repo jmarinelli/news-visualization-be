@@ -1,6 +1,9 @@
 server:
   port: 8080
   context-path: /news-visualization/api
+endpoints:
+  health:
+    sensitive: false
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
