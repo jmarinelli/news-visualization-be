@@ -45,6 +45,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-news-visualization-domain/target/*
-news-visualization-service/target/*
-target/*
+*/target/**
