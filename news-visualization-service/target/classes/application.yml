@@ -2,12 +2,30 @@ server:
   port: 8080
   context-path: /news-visualization/api
 spring:
+  profiles: local
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/
+    url: jdbc:postgresql://localhost:5432/holis
   jpa:
     show-sql: true
     database: POSTGRESQL
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: update
+---
+server:
+  port: 8080
+  context-path: /news-visualization/api
+spring:
+  profiles: production
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgres://kljiyxzimkcype:-KTutQDsB-jW-J2AjkuPglMfsw@ec2-107-21-101-67.compute-1.amazonaws.com:5432/d2flqi8hpn6nlj
+    username: kljiyxzimkcype
+    password: -KTutQDsB-jW-J2AjkuPglMfsw
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: create
