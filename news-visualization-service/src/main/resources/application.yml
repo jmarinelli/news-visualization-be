@@ -8,8 +8,6 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgres://kljiyxzimkcype:-KTutQDsB-jW-J2AjkuPglMfsw@ec2-107-21-101-67.compute-1.amazonaws.com:5432/d2flqi8hpn6nlj
-    username: kljiyxzimkcype
-    password: -KTutQDsB-jW-J2AjkuPglMfsdw
   jpa:
     show-sql: true
     database: POSTGRESQL
