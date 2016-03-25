@@ -5,6 +5,25 @@ endpoints:
   health:
     sensitive: false
 spring:
+  profiles: local
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localdb.pf:5432/
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+---
+server:
+  port: 8080
+  context-path: /news-visualization/api
+endpoints:
+  health:
+    sensitive: false
+spring:
+  profiles: production
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://ec2-107-20-242-191.compute-1.amazonaws.com:5432/d1u69svcgklek?sslmode=require
