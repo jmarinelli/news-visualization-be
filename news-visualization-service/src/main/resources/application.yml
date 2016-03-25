@@ -7,7 +7,9 @@ endpoints:
 spring:
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://ec2-107-21-101-67.compute-1.amazonaws.com:5432/d2flqi8hpn6nlj?user=kljiyxzimkcype&password=-KTutQDsB-jW-J2AjkuPglMfsw&sslmode=require
+    url: jdbc:postgresql://ec2-107-20-242-191.compute-1.amazonaws.com:5432/d1u69svcgklek?sslmode=require
+    username: xqahjjrqfkuqjk
+    password: v7Y-DnbyIrQDh-dGzYVrOeqA42
   jpa:
     show-sql: true
     database: POSTGRESQL
