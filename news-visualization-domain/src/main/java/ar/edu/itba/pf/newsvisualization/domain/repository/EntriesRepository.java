@@ -17,4 +17,7 @@ public interface EntriesRepository extends CrudRepository<Entry, String> {
 
     @Query(value = "SELECT COUNT(*), e.fecha, e.tmp FROM entries e group by e.fecha, e.tmp")
     List<Object[]> countByDateAndMedia();
+
+    @Query(value = "SELECT DISTINCT(tmp) FROM entries")
+    List<String> getMedia();
 }
