@@ -1,6 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.domain.repository;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.Entry;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -20,4 +21,7 @@ public interface EntriesRepository extends CrudRepository<Entry, String> {
 
     @Query(value = "SELECT DISTINCT(tmp) FROM entries")
     List<String> getMedia();
+
+    @Query(value = "SELECT e.summary FROM entries e")
+    List<String> getContents();
 }

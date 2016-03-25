@@ -4,10 +4,13 @@ import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.DateCount;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCount;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
 import ar.edu.itba.pf.newsvisualization.domain.repository.EntriesRepository;
+import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -25,6 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class EntriesService {
 
+    private final Integer bufferSize = 50000;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -40,6 +44,26 @@ public class EntriesService {
             default:
                 return this.getDateCountByMedia(from, to, media);
         }
+    }
+
+    public List<WordCount> getWordCount(List<String> media) {
+        List<WordCount> ret = Lists.newLinkedList();
+        Map<String, Integer> wordCount = Maps.newHashMap();
+        this.entries.getContents().forEach(content -> {
+            String[] wordArray = content.split(" ");
+            for (int i = 0 ; i < wordArray.length ; i++) {
+                String word = wordArray[i].toLowerCase();
+                CharMatcher matcher = CharMatcher.JAVA_LETTER;
+                word = matcher.retainFrom(word);
+                if (word.length() > 3) {
+                    wordCount.putIfAbsent(word, 0);
+                    int count = wordCount.get(word);
+                    wordCount.put(word, ++count);
+                }
+            }
+        });
+        wordCount.forEach((k, v) -> ret.add(new WordCount(k, v)));
+        return ret;
     }
 
     private List<Count> getDateCountByMedia(LocalDate from, LocalDate to, List<String> selectedMedia) {
@@ -105,6 +129,9 @@ public class EntriesService {
     private List<String> sanitizeMedia(List<String> media) {
         if (CollectionUtils.isEmpty(media))
             return Lists.newLinkedList();
-        return media.stream().map(m -> m.toLowerCase()).collect(Collectors.toList());
+        return media.stream().map(m -> {
+            String[] splittedMedia = m.toLowerCase().split("-");
+            return splittedMedia[splittedMedia.length - 1].trim();
+        }).collect(Collectors.toList());
     }
 }

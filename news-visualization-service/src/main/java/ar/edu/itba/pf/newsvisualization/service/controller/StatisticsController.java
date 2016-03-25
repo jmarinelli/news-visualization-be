@@ -2,6 +2,7 @@ package ar.edu.itba.pf.newsvisualization.service.controller;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +31,10 @@ public class StatisticsController {
                                            @RequestParam(required = false) List<String> media,
                                            @RequestParam(required = false, defaultValue = "MEDIA") Grouping groupBy) {
         return entries.getCounts(from, to, media, groupBy);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "word-count")
+    public List<WordCount> getWordCount(@RequestParam(required = false) List<String> media) {
+        return this.entries.getWordCount(media);
     }
 }
