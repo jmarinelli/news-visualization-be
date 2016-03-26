@@ -46,7 +46,7 @@ public class EntriesService {
         }
     }
 
-    public List<WordCount> getWordCount(List<String> media, Long maxSize) {
+    public List<WordCount> getWordCount(List<String> media, Long minQuantity) {
         List<WordCount> ret = Lists.newLinkedList();
         Map<String, Integer> wordCount = Maps.newHashMap();
         this.entries.getContents().forEach(content -> {
@@ -62,8 +62,10 @@ public class EntriesService {
                 }
             }
         });
-        wordCount.forEach((k, v) -> ret.add(new WordCount(k, v)));
-        return ret.stream().limit(maxSize).collect(Collectors.toList());
+        wordCount.forEach((k, v) -> {
+            if (v >= minQuantity) ret.add(new WordCount(k, v));
+        });
+        return ret.stream().collect(Collectors.toList());
     }
 
     private List<Count> getDateCountByMedia(LocalDate from, LocalDate to, List<String> selectedMedia) {
