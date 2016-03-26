@@ -5,9 +5,9 @@ package ar.edu.itba.pf.newsvisualization.domain.model.response;
  */
 public class WordCount {
     private String word;
-    private Integer quantity;
+    private Long quantity;
 
-    public WordCount(String word, Integer quantity) {
+    public WordCount(String word, Long quantity) {
         this.word = word;
         this.quantity = quantity;
     }
@@ -16,7 +16,7 @@ public class WordCount {
         return word;
     }
 
-    public Integer getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 }

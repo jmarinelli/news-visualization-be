@@ -1,10 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.domain.service;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.DateCount;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCount;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.*;
 import ar.edu.itba.pf.newsvisualization.domain.repository.EntriesRepository;
 import com.google.common.base.CharMatcher;
 import com.google.common.collect.Lists;
@@ -46,9 +43,9 @@ public class EntriesService {
         }
     }
 
-    public List<WordCount> getWordCount(List<String> media, Long minQuantity) {
+    public WordCountResponse getWordCount(List<String> media, Long minQuantity) {
         List<WordCount> ret = Lists.newLinkedList();
-        Map<String, Integer> wordCount = Maps.newHashMap();
+        Map<String, Long> wordCount = Maps.newHashMap();
         this.entries.getContents().forEach(content -> {
             String[] wordArray = content.split(" ");
             for (int i = 0 ; i < wordArray.length ; i++) {
@@ -56,16 +53,23 @@ public class EntriesService {
                 CharMatcher matcher = CharMatcher.JAVA_LETTER;
                 word = matcher.retainFrom(word);
                 if (word.length() > 3) {
-                    wordCount.putIfAbsent(word, 0);
-                    int count = wordCount.get(word);
+                    wordCount.putIfAbsent(word, 0L);
+                    long count = wordCount.get(word);
                     wordCount.put(word, ++count);
                 }
             }
         });
-        wordCount.forEach((k, v) -> {
-            if (v >= minQuantity) ret.add(new WordCount(k, v));
-        });
-        return ret.stream().collect(Collectors.toList());
+        Long min = 0L, max = Long.MAX_VALUE;
+        for (Map.Entry<String, Long> entry : wordCount.entrySet()) {
+            Long value = entry.getValue();
+            String key = entry.getKey();
+            if (value >= minQuantity) {
+                if (min > value) min = value;
+                if (max < value) max = value;
+                ret.add(new WordCount(key, value));
+            }
+        }
+        return new WordCountResponse(min, max, ret.stream().collect(Collectors.toList()));
     }
 
     private List<Count> getDateCountByMedia(LocalDate from, LocalDate to, List<String> selectedMedia) {
