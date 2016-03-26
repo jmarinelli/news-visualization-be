@@ -43,7 +43,7 @@ public class EntriesService {
         }
     }
 
-    public WordCountResponse getWordCount(List<String> media, Long minQuantity) {
+    public WordCountResponse getWordCount(List<String> media, Long minQuantity, Integer minWordLength) {
         List<WordCount> ret = Lists.newLinkedList();
         Map<String, Long> wordCount = Maps.newHashMap();
         this.entries.getContents().forEach(content -> {
@@ -52,7 +52,7 @@ public class EntriesService {
                 String word = wordArray[i].toLowerCase();
                 CharMatcher matcher = CharMatcher.JAVA_LETTER;
                 word = matcher.retainFrom(word);
-                if (word.length() > 3) {
+                if (word.length() >= minWordLength) {
                     wordCount.putIfAbsent(word, 0L);
                     long count = wordCount.get(word);
                     wordCount.put(word, ++count);

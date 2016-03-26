@@ -36,7 +36,8 @@ public class StatisticsController {
 
     @RequestMapping(method = RequestMethod.GET, value = "word-count")
     public WordCountResponse getWordCount(@RequestParam(required = false) List<String> media,
-                                        @RequestParam(required = false, defaultValue = "100") Long minQuantity) {
-        return this.entries.getWordCount(media, minQuantity);
+                                          @RequestParam(required = false, defaultValue = "100") Long minQuantity,
+                                          @RequestParam(required = false, defaultValue = "5") Integer minWordLength) {
+        return this.entries.getWordCount(media, minQuantity, minWordLength);
     }
 }
