@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Service
 public class EntriesService {
 
-    private final Integer bufferSize = 50000;
+    private final Integer bufferSize = 1000;
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -46,7 +46,7 @@ public class EntriesService {
         }
     }
 
-    public List<WordCount> getWordCount(List<String> media) {
+    public List<WordCount> getWordCount(List<String> media, Long maxSize) {
         List<WordCount> ret = Lists.newLinkedList();
         Map<String, Integer> wordCount = Maps.newHashMap();
         this.entries.getContents().forEach(content -> {
@@ -63,7 +63,7 @@ public class EntriesService {
             }
         });
         wordCount.forEach((k, v) -> ret.add(new WordCount(k, v)));
-        return ret;
+        return ret.stream().limit(maxSize).collect(Collectors.toList());
     }
 
     private List<Count> getDateCountByMedia(LocalDate from, LocalDate to, List<String> selectedMedia) {

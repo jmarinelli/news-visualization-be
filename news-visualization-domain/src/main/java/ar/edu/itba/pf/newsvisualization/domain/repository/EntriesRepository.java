@@ -24,4 +24,7 @@ public interface EntriesRepository extends CrudRepository<Entry, String> {
 
     @Query(value = "SELECT e.summary FROM entries e")
     List<String> getContents();
+
+    @Query(value = "SELECT e.summary FROM entries e")
+    List<String> getContents(Pageable pageable);
 }
