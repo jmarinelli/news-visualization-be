@@ -59,7 +59,7 @@ public class EntriesService {
                 }
             }
         });
-        Long min = 0L, max = Long.MAX_VALUE;
+        Long min = Long.MAX_VALUE, max = 0L;
         for (Map.Entry<String, Long> entry : wordCount.entrySet()) {
             Long value = entry.getValue();
             String key = entry.getKey();
