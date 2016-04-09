@@ -2,6 +2,7 @@ package ar.edu.itba.pf.newsvisualization.service.controller;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaStats;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCountResponse;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
@@ -32,6 +33,13 @@ public class StatisticsController {
                                            @RequestParam(required = false) List<String> media,
                                            @RequestParam(required = false, defaultValue = "MEDIA") Grouping groupBy) {
         return entries.getCounts(from, to, media, groupBy);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "by-category")
+    public List<MediaStats> getAggregatedMedia(@RequestParam(required = false) LocalDate from,
+                                               @RequestParam(required = false) LocalDate to,
+                                               @RequestParam(required = false) String category) {
+        return entries.getAggregatedMedia(from, to, category);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "word-count")

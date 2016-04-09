@@ -34,6 +34,38 @@ public class EntriesService {
     @Autowired
     public EntriesService(EntriesRepository entries) {this.entries = entries;}
 
+    public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, String category) {
+        List<Object[]> queryResult;
+        try {
+            if (StringUtils.isEmpty(category)) {
+                queryResult =
+                        entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)));
+            } else {
+                queryResult =
+                        entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)), category);
+            }
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Date format not supported");
+        }
+        final Map<String, Long> countByMedia = Maps.newHashMap();
+        final List<MediaStats> stats = Lists.newLinkedList();
+
+        if (!CollectionUtils.isEmpty(queryResult)) {
+            queryResult.forEach(q -> {
+                String media = String.valueOf(q[2]);
+                Long count = (Long) q[0];
+                countByMedia.putIfAbsent(media, 0L);
+                Long previousCount = countByMedia.get(media);
+                countByMedia.put(media, previousCount + count);
+            });
+        }
+
+        countByMedia.forEach((m, c) -> stats.add(new MediaStats(c, m)));
+        stats.sort((s1, s2) -> s1.getCount().compareTo(s2.getCount()));
+
+        return stats;
+    }
+
     public List<Count> getCounts(LocalDate from, LocalDate to, List<String> media, Grouping groupBy) {
         switch (groupBy) {
             case DATE:
@@ -44,8 +76,8 @@ public class EntriesService {
     }
 
     public WordCountResponse getWordCount(List<String> media, Long minQuantity, Integer minWordLength) {
-        List<WordCount> ret = Lists.newLinkedList();
-        Map<String, Long> wordCount = Maps.newHashMap();
+        final List<WordCount> ret = Lists.newLinkedList();
+        final Map<String, Long> wordCount = Maps.newHashMap();
         this.entries.getContents().forEach(content -> {
             String[] wordArray = content.split(" ");
             for (int i = 0 ; i < wordArray.length ; i++) {
