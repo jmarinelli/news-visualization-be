@@ -61,7 +61,7 @@ public class EntriesService {
         }
 
         countByMedia.forEach((m, c) -> stats.add(new MediaStats(c, m)));
-        stats.sort((s1, s2) -> s1.getCount().compareTo(s2.getCount()));
+        stats.sort((s1, s2) -> s2.getCount().compareTo(s1.getCount()));
 
         return stats;
     }

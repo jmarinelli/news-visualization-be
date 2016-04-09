@@ -23,7 +23,7 @@ public class CategoriesController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<String> findOne() {
+    public List<String> find() {
         return this.media.getCategoryList();
     }
 }

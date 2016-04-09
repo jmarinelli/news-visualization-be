@@ -32,12 +32,7 @@ public class MediaService {
     }
 
     public List<String> getCategoryList() {
-        Set<String> mediaList = Sets.newHashSet();
-//        this.entries.getCategories().forEach(m -> {
-//            String[] splittedValue = m.split("-");
-//            mediaList.add(splittedValue[splittedValue.length - 1].trim());
-//        });
-        List<String> retList = Lists.newArrayList(mediaList);
+        List<String> retList = this.entries.getCategories();
         retList.sort(String.CASE_INSENSITIVE_ORDER);
         return retList;
     }
