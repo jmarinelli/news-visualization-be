@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
@@ -35,8 +36,8 @@ public class TitlesController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TitlePosition> find() {
-        return titlesService.getTitlePositions();
+    public List<TitlePosition> find(@RequestParam(required = false, defaultValue = "false") Boolean includeAllTitles) {
+        return titlesService.getTitlePositions(includeAllTitles);
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -50,7 +51,6 @@ public class TitlesController {
           .setOAuthAccessTokenSecret("1iPlQaFpIkX9F6fFrvhucF1hl9WFoQSHdQ2Sguy0Sv5VL");
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-        boolean blocked = false;
         List<Status> statuses = Lists.newLinkedList();
         List<Status> statusesAux;
         String user;
@@ -58,13 +58,13 @@ public class TitlesController {
         int page = 1;
         do {
             try {
-                statusesAux = twitter.getUserTimeline(user, new Paging(page++));
+                statusesAux = twitter.getUserTimeline(user, new Paging(page++, 200));
                 statuses.addAll(statusesAux);
             } catch (Exception e) {
-                blocked = true;
+                break;
             }
             System.out.println(statuses.size());
-        } while (!statuses.isEmpty() && !blocked);
+        } while (!statusesAux.isEmpty());
         for (Status status : statuses) {
             Title title = new Title();
             title.setTimestamp(status.getCreatedAt().getTime());

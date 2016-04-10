@@ -27,7 +27,7 @@ public class TitlesService {
         this.titlesRepository = titlesRepository;
     }
 
-    public List<TitlePosition> getTitlePositions() {
+    public List<TitlePosition> getTitlePositions(Boolean includeAllTitles) {
         List<TitlePosition> titlePositions = Lists.newLinkedList();
         Set<String> titleList = Sets.newHashSet();
         Iterable<Title> titles = this.titlesRepository.findAll();
@@ -39,14 +39,16 @@ public class TitlesService {
 
         titles.forEach(t -> {
 
-            titlePositions.add(new TitlePosition(t.getTitle1(), 3, t.getDate()));
-            titlePositions.add(new TitlePosition(t.getTitle2(), 2, t.getDate()));
-            titlePositions.add(new TitlePosition(t.getTitle3(), 1, t.getDate()));
-            titleList.forEach(tt -> {
-                if (!(tt.equals(t.getTitle1()) || tt.equals(t.getTitle2()) || tt.equals(t.getTitle3()))) {
-                    titlePositions.add(new TitlePosition(tt, 0, t.getDate()));
-                }
-            });
+            titlePositions.add(new TitlePosition(t.getTitle1(), 3, t.getTimestamp()));
+            titlePositions.add(new TitlePosition(t.getTitle2(), 2, t.getTimestamp()));
+            titlePositions.add(new TitlePosition(t.getTitle3(), 1, t.getTimestamp()));
+            if (includeAllTitles) {
+                titleList.forEach(tt -> {
+                    if (!(tt.equals(t.getTitle1()) || tt.equals(t.getTitle2()) || tt.equals(t.getTitle3()))) {
+                        titlePositions.add(new TitlePosition(tt, 0, t.getTimestamp()));
+                    }
+                });
+            }
         });
 
         titlePositions.sort((t1, t2) -> t1.getDate().compareTo(t2.getDate()));

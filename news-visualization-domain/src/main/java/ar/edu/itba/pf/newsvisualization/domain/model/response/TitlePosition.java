@@ -1,7 +1,5 @@
 package ar.edu.itba.pf.newsvisualization.domain.model.response;
 
-import java.util.Date;
-
 /**
  * Created by juanjosemarinelli on 4/9/16.
  */
@@ -9,9 +7,9 @@ public class TitlePosition {
 
     private String title;
     private Integer position;
-    private Date date;
+    private Long date;
 
-    public TitlePosition(String title, Integer position, Date date) {
+    public TitlePosition(String title, Integer position, Long date) {
         this.title = title;
         this.position = position;
         this.date = date;
@@ -25,7 +23,7 @@ public class TitlePosition {
         return position;
     }
 
-    public Date getDate() {
+    public Long getDate() {
         return date;
     }
 }
