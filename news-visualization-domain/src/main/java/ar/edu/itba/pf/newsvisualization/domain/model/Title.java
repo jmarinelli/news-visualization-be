@@ -13,20 +13,17 @@ import java.util.Date;
 public class Title {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    private Long timestamp;
     private String title1;
     private String title2;
     private String title3;
-    private Date date;
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Long getTimestamp() {
+        return timestamp;
     }
 
-    public Integer getId() {
-
-        return id;
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getTitle1() {
@@ -51,13 +48,5 @@ public class Title {
 
     public void setTitle3(String title3) {
         this.title3 = title3;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
     }
 }

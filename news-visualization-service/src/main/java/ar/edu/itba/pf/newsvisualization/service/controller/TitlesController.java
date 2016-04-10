@@ -49,32 +49,31 @@ public class TitlesController {
           .setOAuthAccessTokenSecret("1iPlQaFpIkX9F6fFrvhucF1hl9WFoQSHdQ2Sguy0Sv5VL");
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-        try {
-            List<Status> statuses = Lists.newLinkedList();
-            List<Status> statusesAux;
-            String user;
-            user = "ln_title";
-            int page = 1;
-            do {
+        boolean blocked = false;
+        List<Status> statuses = Lists.newLinkedList();
+        List<Status> statusesAux;
+        String user;
+        user = "ln_title";
+        int page = 1;
+        do {
+            try {
                 statusesAux = twitter.getUserTimeline(user, new Paging(page++));
                 statuses.addAll(statusesAux);
-                System.out.println(statuses);
-            } while (!statuses.isEmpty());
-            for (Status status : statuses) {
-                Title title = new Title();
-                title.setDate(status.getCreatedAt());
-                String[] preTitles = status.getText().split(",");
-                title.setTitle1(preTitles[0].trim());
-                if (preTitles.length > 1)
-                    title.setTitle2(preTitles[1].substring(1));
-                if (preTitles.length > 2)
-                    title.setTitle3(preTitles[2].substring(1));
-                titles.add(title);
+            } catch (Exception e) {
+                blocked = true;
             }
-        } catch (TwitterException te) {
-            te.printStackTrace();
-            System.out.println("Failed to get timeline: " + te.getMessage());
-            System.exit(-1);
+            System.out.println(statuses.size());
+        } while (!statuses.isEmpty() && !blocked);
+        for (Status status : statuses) {
+            Title title = new Title();
+            title.setTimestamp(status.getCreatedAt().getTime());
+            String[] preTitles = status.getText().split(",");
+            title.setTitle1(preTitles[0].trim());
+            if (preTitles.length > 1)
+                title.setTitle2(preTitles[1].substring(1));
+            if (preTitles.length > 2)
+                title.setTitle3(preTitles[2].substring(1));
+            titles.add(title);
         }
         titlesRepository.save(titles);
         return titles;
