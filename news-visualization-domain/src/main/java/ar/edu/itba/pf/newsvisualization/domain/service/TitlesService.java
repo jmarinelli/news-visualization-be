@@ -27,8 +27,8 @@ public class TitlesService {
         this.titlesRepository = titlesRepository;
     }
 
-    public List<TitlePositionResponse> getTitlePositions() {
-        List<TitlePositionResponse> titlePositionResponseList = Lists.newLinkedList();
+    public List<TitlePosition> getTitlePositions() {
+        List<TitlePosition> titlePositions = Lists.newLinkedList();
         Set<String> titleList = Sets.newHashSet();
         Iterable<Title> titles = this.titlesRepository.findAll();
         titles.forEach(t -> {
@@ -38,22 +38,19 @@ public class TitlesService {
         });
 
         titles.forEach(t -> {
-            List<TitlePosition> titlePositions = Lists.newLinkedList();
 
-            titlePositions.add(new TitlePosition(t.getTitle1(), 3));
-            titlePositions.add(new TitlePosition(t.getTitle2(), 2));
-            titlePositions.add(new TitlePosition(t.getTitle3(), 1));
+            titlePositions.add(new TitlePosition(t.getTitle1(), 3, t.getDate()));
+            titlePositions.add(new TitlePosition(t.getTitle2(), 2, t.getDate()));
+            titlePositions.add(new TitlePosition(t.getTitle3(), 1, t.getDate()));
             titleList.forEach(tt -> {
                 if (!(tt.equals(t.getTitle1()) || tt.equals(t.getTitle2()) || tt.equals(t.getTitle3()))) {
-                    titlePositions.add(new TitlePosition(tt, 0));
+                    titlePositions.add(new TitlePosition(tt, 0, t.getDate()));
                 }
             });
-
-            titlePositionResponseList.add(new TitlePositionResponse(titlePositions, t.getDate()));
         });
 
-        titlePositionResponseList.sort((t1, t2) -> t1.getDate().compareTo(t2.getDate()));
+        titlePositions.sort((t1, t2) -> t1.getDate().compareTo(t2.getDate()));
 
-        return titlePositionResponseList;
+        return titlePositions;
     }
 }
