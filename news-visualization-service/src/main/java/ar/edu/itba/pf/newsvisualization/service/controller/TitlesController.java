@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping(value = "titles")
 public class TitlesController {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     private TitlesRepository titlesRepository;
 
@@ -33,7 +33,8 @@ public class TitlesController {
         List<TitleResponse> response = Lists.newLinkedList();
 
         this.titlesRepository.findAll().forEach(t -> {
-            response.add(new TitleResponse(t.getTitle1(), t.getTitle2(), t.getTitle3(), sdf.format(t.getDate())));
+            String[] dateTime = sdf.format(t.getDate()).split(" ");
+            response.add(new TitleResponse(t.getTitle1(), t.getTitle2(), t.getTitle3(), dateTime[0], dateTime[1]));
         });
 
         return response;

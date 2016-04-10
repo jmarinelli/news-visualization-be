@@ -8,13 +8,14 @@ public class TitleResponse {
     private String title2;
     private String title3;
     private String date;
+    private String time;
 
-    public TitleResponse(String title1, String title2, String title3, String date) {
-
+    public TitleResponse(String title1, String title2, String title3, String date, String time) {
         this.title1 = title1;
         this.title2 = title2;
         this.title3 = title3;
         this.date = date;
+        this.time = time;
     }
 
     public String getTitle1() {
@@ -31,5 +32,9 @@ public class TitleResponse {
 
     public String getDate() {
         return date;
+    }
+
+    public String getTime() {
+        return time;
     }
 }
