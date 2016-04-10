@@ -24,8 +24,6 @@ import java.util.List;
 @RequestMapping(value = "titles")
 public class TitlesController {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-
     private TitlesRepository titlesRepository;
     private TitlesService titlesService;
 
