@@ -1,8 +1,9 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.Title;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.TitleResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.TitlePositionResponse;
 import ar.edu.itba.pf.newsvisualization.domain.repository.TitlesRepository;
+import ar.edu.itba.pf.newsvisualization.domain.service.TitlesService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,20 +25,17 @@ public class TitlesController {
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 
     private TitlesRepository titlesRepository;
+    private TitlesService titlesService;
 
     @Autowired
-    public TitlesController(TitlesRepository titlesRepository) {this.titlesRepository = titlesRepository;}
+    public TitlesController(TitlesRepository titlesRepository, TitlesService titlesService) {
+        this.titlesRepository = titlesRepository;
+        this.titlesService = titlesService;
+    }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TitleResponse> find() {
-        List<TitleResponse> response = Lists.newLinkedList();
-
-        this.titlesRepository.findAll().forEach(t -> {
-            String[] dateTime = sdf.format(t.getDate()).split(" ");
-            response.add(new TitleResponse(t.getTitle1(), t.getTitle2(), t.getTitle3(), dateTime[0], dateTime[1]));
-        });
-
-        return response;
+    public List<TitlePositionResponse> find() {
+        return titlesService.getTitlePositions();
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -52,10 +50,16 @@ public class TitlesController {
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
         try {
-            List<Status> statuses;
+            List<Status> statuses = Lists.newLinkedList();
+            List<Status> statusesAux;
             String user;
             user = "ln_title";
-            statuses = twitter.getUserTimeline(user, new Paging(1, Integer.MAX_VALUE));
+            int page = 1;
+            do {
+                statusesAux = twitter.getUserTimeline(user, new Paging(page++));
+                statuses.addAll(statusesAux);
+                System.out.println(statuses);
+            } while (!statuses.isEmpty());
             for (Status status : statuses) {
                 Title title = new Title();
                 title.setDate(status.getCreatedAt());
