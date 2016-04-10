@@ -1,7 +1,5 @@
 package ar.edu.itba.pf.newsvisualization.domain.model.response;
 
-import sun.util.calendar.LocalGregorianCalendar;
-
 import java.util.Date;
 import java.util.List;
 

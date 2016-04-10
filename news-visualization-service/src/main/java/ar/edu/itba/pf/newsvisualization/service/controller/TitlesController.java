@@ -1,6 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.Title;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.TitlePosition;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.TitlePositionResponse;
 import ar.edu.itba.pf.newsvisualization.domain.repository.TitlesRepository;
 import ar.edu.itba.pf.newsvisualization.domain.service.TitlesService;
@@ -34,7 +35,7 @@ public class TitlesController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<TitlePositionResponse> find() {
+    public List<TitlePosition> find() {
         return titlesService.getTitlePositions();
     }
 
