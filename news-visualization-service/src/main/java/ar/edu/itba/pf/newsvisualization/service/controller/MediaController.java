@@ -1,11 +1,15 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
+import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCategories;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaStats;
 import ar.edu.itba.pf.newsvisualization.domain.service.MediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -23,5 +27,10 @@ public class MediaController {
     @RequestMapping(method = RequestMethod.GET)
     public List<String> getMediaList() {
         return this.media.getMediaList();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "by-category")
+    public List<MediaCategories> getAggregatedMedia() {
+        return this.media.getCategories();
     }
 }
