@@ -44,7 +44,7 @@ public class MediaService {
     public List<MediaCategories> getCategories(List<String> medias) {
         List<MediaCategories> ret = Lists.newLinkedList();
         List<Object[]> objects = entries.getMediaCategories(medias);
-        Set<String> categories = Sets.newHashSet(getCategoryList());
+        List<String> categories = Lists.newLinkedList(getCategoryList());
         Map<String, Map<String, Long>> mediaMap = Maps.newHashMap();
 
         for (Object[] obj : objects) {
