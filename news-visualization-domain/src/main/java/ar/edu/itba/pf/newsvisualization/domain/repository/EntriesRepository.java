@@ -35,6 +35,6 @@ public interface EntriesRepository extends CrudRepository<Entry, String> {
     @Query(value = "SELECT e.summary FROM entries e")
     List<String> getContents(Pageable pageable);
 
-    @Query(value = "SELECT COUNT(*), e.tmp, e.seccion FROM entries e GROUP BY e.tmp, e.seccion")
-    List<Object[]> getMediaCategories();
+    @Query(value = "SELECT COUNT(*), e.tmp, e.seccion FROM entries e GROUP BY e.tmp, e.seccion HAVING e.tmp in ?1")
+    List<Object[]> getMediaCategories(List<String> medias);
 }

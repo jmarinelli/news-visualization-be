@@ -30,7 +30,7 @@ public class MediaController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "by-category")
-    public List<MediaCategories> getAggregatedMedia() {
-        return this.media.getCategories();
+    public List<MediaCategories> getAggregatedMedia(@RequestParam List<String> medias) {
+        return this.media.getCategories(medias);
     }
 }
