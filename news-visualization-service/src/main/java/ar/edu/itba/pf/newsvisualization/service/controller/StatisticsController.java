@@ -7,10 +7,7 @@ import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCountResponse;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +32,7 @@ public class StatisticsController {
         return entries.getCounts(from, to, media, groupBy);
     }
 
+    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, value = "by-category")
     public List<MediaStats> getAggregatedMedia(@RequestParam(required = false) LocalDate from,
                                                @RequestParam(required = false) LocalDate to,
