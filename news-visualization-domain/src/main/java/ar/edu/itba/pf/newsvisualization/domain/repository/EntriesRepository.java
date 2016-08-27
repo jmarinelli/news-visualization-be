@@ -1,6 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.domain.repository;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.Entry;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCategories;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -33,4 +34,7 @@ public interface EntriesRepository extends CrudRepository<Entry, String> {
 
     @Query(value = "SELECT e.summary FROM entries e")
     List<String> getContents(Pageable pageable);
+
+    @Query(value = "SELECT COUNT(*), e.tmp, e.seccion FROM entries e GROUP BY e.tmp, e.seccion HAVING e.tmp in ?1")
+    List<Object[]> getMediaCategories(List<String> medias);
 }

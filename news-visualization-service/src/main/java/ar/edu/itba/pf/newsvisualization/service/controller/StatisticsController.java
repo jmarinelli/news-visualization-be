@@ -34,10 +34,11 @@ public class StatisticsController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET, value = "by-category")
-    public List<MediaStats> getAggregatedMedia(@RequestParam(required = false) LocalDate from,
-                                               @RequestParam(required = false) LocalDate to,
-                                               @RequestParam(required = false) String category) {
-        return entries.getAggregatedMedia(from, to, category);
+    public List<MediaStats> getAggregatedMedia(@RequestParam LocalDate from,
+                                               @RequestParam LocalDate to,
+                                               @RequestParam(required = false) String category,
+                                              @RequestParam(required = false, defaultValue = "10") Integer limit) {
+        return entries.getAggregatedMedia(from, to, category, limit);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "word-count")

@@ -34,7 +34,7 @@ public class EntriesService {
     @Autowired
     public EntriesService(EntriesRepository entries) {this.entries = entries;}
 
-    public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, String category) {
+    public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, String category, Integer limit) {
         List<Object[]> queryResult;
         try {
             if (StringUtils.isEmpty(category)) {
@@ -63,7 +63,7 @@ public class EntriesService {
         countByMedia.forEach((m, c) -> stats.add(new MediaStats(c, m)));
         stats.sort((s1, s2) -> s2.getCount().compareTo(s1.getCount()));
 
-        return stats;
+        return stats.subList(0, limit);
     }
 
     public List<Count> getCounts(LocalDate from, LocalDate to, List<String> media, Grouping groupBy) {
