@@ -36,9 +36,9 @@ public class StatisticsController {
     @RequestMapping(method = RequestMethod.GET, value = "by-category")
     public List<MediaStats> getAggregatedMedia(@RequestParam LocalDate from,
                                                @RequestParam LocalDate to,
-                                               @RequestParam(required = false) String category,
+                                               @RequestParam(required = false) List<String> categories,
                                               @RequestParam(required = false, defaultValue = "10") Integer limit) {
-        return entries.getAggregatedMedia(from, to, category, limit);
+        return entries.getAggregatedMedia(from, to, categories, limit);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "word-count")

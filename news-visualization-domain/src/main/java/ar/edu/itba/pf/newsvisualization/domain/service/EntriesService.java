@@ -34,15 +34,15 @@ public class EntriesService {
     @Autowired
     public EntriesService(EntriesRepository entries) {this.entries = entries;}
 
-    public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, String category, Integer limit) {
+    public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, List<String> categories, Integer limit) {
         List<Object[]> queryResult;
         try {
-            if (StringUtils.isEmpty(category)) {
+            if (categories.isEmpty()) {
                 queryResult =
                         entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)));
             } else {
                 queryResult =
-                        entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)), category);
+                        entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)), categories);
             }
         } catch (ParseException e) {
             throw new IllegalArgumentException("Date format not supported");
