@@ -39,7 +39,7 @@ public class EntriesService {
         try {
             if (CollectionUtils.isEmpty(categories)) {
                 queryResult =
-                        entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)));
+                        entries.countByDateAndMediaAndCategories(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)));
             } else {
                 queryResult =
                         entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)), categories);
