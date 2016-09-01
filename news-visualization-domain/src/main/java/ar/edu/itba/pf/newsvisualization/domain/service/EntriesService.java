@@ -37,7 +37,7 @@ public class EntriesService {
     public List<MediaStats> getAggregatedMedia(LocalDate from, LocalDate to, List<String> categories, Integer limit) {
         List<Object[]> queryResult;
         try {
-            if (categories.isEmpty()) {
+            if (CollectionUtils.isEmpty(categories)) {
                 queryResult =
                         entries.countByDateAndMedia(sdf.parse(dtf.format(from)), sdf.parse(dtf.format(to)));
             } else {
