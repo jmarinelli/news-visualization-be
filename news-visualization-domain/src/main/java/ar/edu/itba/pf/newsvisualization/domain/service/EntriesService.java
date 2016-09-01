@@ -48,19 +48,24 @@ public class EntriesService {
             throw new IllegalArgumentException("Date format not supported");
         }
         final Map<String, Long> countByMedia = Maps.newHashMap();
+        final Map<String, List<CategoryStats>> countDetailByMedia = Maps.newHashMap();
         final List<MediaStats> stats = Lists.newLinkedList();
 
         if (!CollectionUtils.isEmpty(queryResult)) {
             queryResult.forEach(q -> {
                 String media = String.valueOf(q[2]);
                 Long count = (Long) q[0];
+
                 countByMedia.putIfAbsent(media, 0L);
                 Long previousCount = countByMedia.get(media);
                 countByMedia.put(media, previousCount + count);
+
+                countDetailByMedia.putIfAbsent(media, Lists.newLinkedList());
+                countDetailByMedia.get(media).add(new CategoryStats(count, String.valueOf(q[1])));
             });
         }
 
-        countByMedia.forEach((m, c) -> stats.add(new MediaStats(c, m)));
+        countByMedia.forEach((m, c) -> stats.add(new DetailedMediaStats(c, m, countDetailByMedia.get(m))));
         stats.sort((s1, s2) -> s2.getCount().compareTo(s1.getCount()));
 
         return stats.subList(0, limit);

@@ -4,8 +4,8 @@ package ar.edu.itba.pf.newsvisualization.domain.model.response;
  * Created by juanjosemarinelli on 4/9/16.
  */
 public class MediaStats {
-    private Long count;
-    private String media;
+    private final Long count;
+    private final String media;
 
     public MediaStats(Long count, String media) {
         this.count = count;
