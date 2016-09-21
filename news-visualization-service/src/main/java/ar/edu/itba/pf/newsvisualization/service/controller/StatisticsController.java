@@ -3,9 +3,11 @@ package ar.edu.itba.pf.newsvisualization.service.controller;
 import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaStats;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCount;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCloudResponse;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCountResponse;
+import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
+import com.mashape.unirest.http.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,13 @@ import java.util.List;
 @RequestMapping(value = "statistics")
 public class StatisticsController {
 
+    private ElasticRepository elasticRepository;
     private EntriesService entries;
 
     @Autowired
-    public StatisticsController(EntriesService entries) {this.entries = entries;}
+    public StatisticsController(ElasticRepository elasticRepository, EntriesService entries) {
+        this.elasticRepository = elasticRepository;
+        this.entries = entries;}
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Count> getMediaCountByDate(@RequestParam(required = false) LocalDate from,
@@ -46,5 +51,10 @@ public class StatisticsController {
                                           @RequestParam(required = false, defaultValue = "100") Long minQuantity,
                                           @RequestParam(required = false, defaultValue = "5") Integer minWordLength) {
         return this.entries.getWordCount(media, minQuantity, minWordLength);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "elastic-word-count")
+    public WordCloudResponse getWordCount(@RequestParam String from, @RequestParam String to) {
+        return elasticRepository.getWordCount(from, to);
     }
 }
