@@ -19,7 +19,7 @@ import java.io.IOException;
 @Repository
 public class ElasticRepository {
 
-    private static final String BASE_URL = "http://localhost:9200/jdbc/jdbc/_search";
+    private static final String BASE_URL = "https://fxj6i0pf:g3e97ijddwmmizu4@jasmine-1526871.us-east-1.bonsai.io/jdbc/jdbc/_search";
 
     public ElasticRepository() {
         final com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
