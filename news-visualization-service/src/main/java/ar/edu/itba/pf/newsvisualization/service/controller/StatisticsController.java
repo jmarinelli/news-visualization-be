@@ -3,11 +3,10 @@ package ar.edu.itba.pf.newsvisualization.service.controller;
 import ar.edu.itba.pf.newsvisualization.domain.model.request.Grouping;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.Count;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaStats;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCloudResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCountResponse;
 import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
-import com.mashape.unirest.http.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

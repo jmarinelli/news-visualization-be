@@ -1,10 +1,11 @@
 package ar.edu.itba.pf.newsvisualization.domain.repository;
 
+import ar.edu.itba.pf.newsvisualization.domain.model.request.TrendRequest;
 import ar.edu.itba.pf.newsvisualization.domain.model.request.WordCloudRequest;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.WordCloudResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.main.TrendResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
@@ -12,6 +13,7 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by juanjosemarinelli on 9/20/16.
@@ -19,7 +21,7 @@ import java.io.IOException;
 @Repository
 public class ElasticRepository {
 
-    private static final String BASE_URL = "https://fxj6i0pf:g3e97ijddwmmizu4@jasmine-1526871.us-east-1.bonsai.io/jdbc/jdbc/_search";
+    private static final String BASE_URL = "http://localhost:9200/jdbc/jdbc/_search";
 
     public ElasticRepository() {
         final com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
@@ -52,6 +54,20 @@ public class ElasticRepository {
 
         try {
             HttpResponse<WordCloudResponse> response = Unirest.post(BASE_URL).body(requestBody).asObject(WordCloudResponse.class);
+
+            return response.getBody();
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public TrendResponse getTrends(List<String> terms, String from, String to) {
+        TrendRequest requestBody = new TrendRequest(terms, from, to);
+
+        try {
+            HttpResponse<TrendResponse> response = Unirest.post(BASE_URL).body(requestBody).asObject(TrendResponse.class);
 
             return response.getBody();
         } catch (UnirestException e) {
