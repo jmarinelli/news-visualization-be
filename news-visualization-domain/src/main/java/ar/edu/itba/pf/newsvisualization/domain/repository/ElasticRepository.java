@@ -6,13 +6,22 @@ import ar.edu.itba.pf.newsvisualization.domain.model.response.main.TrendResponse
 import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.google.common.collect.Lists;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Repository;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupDir;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -74,6 +83,96 @@ public class ElasticRepository {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public List<List<String>> getTop(String from, String to, List<String> keywords, String media,
+                                        Integer limit, Integer offset) {
+        List<List<String>> ret = Lists.newLinkedList();
+        ST titles = loadTemplate("top");
+
+        titles.add("from", from);
+        titles.add("to", to);
+        titles.add("media", media);
+        titles.add("keywords", keywords);
+        titles.add("limit", limit);
+        titles.add("offset", offset);
+
+        try {
+            HttpResponse<String> response = Unirest.post(BASE_URL).body(titles.render()).asString();
+
+
+            JSONArray hits = new JSONObject(response.getBody()).getJSONObject("hits").getJSONArray("hits");
+            for (int i = 0; i < hits.length(); i++) {
+                List<String> obj = Lists.newLinkedList();
+                JSONObject hit = hits.getJSONObject(i).getJSONObject("_source");
+
+                obj.add(hit.getString("title"));
+                obj.add(hit.getString("id"));
+                obj.add(hit.getString("tmp"));
+                obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
+
+                ret.add(obj);
+            }
+
+            return ret;
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<List<String>> getTitles(String from, String to, List<String> keywords, String media,
+                                        Integer limit, Integer offset) {
+        List<List<String>> ret = Lists.newLinkedList();
+        ST titles = loadTemplate("titles");
+
+        titles.add("from", from);
+        titles.add("to", to);
+        titles.add("media", media);
+        titles.add("keywords", keywords);
+        titles.add("limit", limit);
+        titles.add("offset", offset);
+
+        try {
+            HttpResponse<String> response = Unirest.post(BASE_URL).body(titles.render()).asString();
+
+
+            JSONArray hits = new JSONObject(response.getBody()).getJSONObject("hits").getJSONArray("hits");
+            for (int i = 0; i < hits.length(); i++) {
+                List<String> obj = Lists.newLinkedList();
+                JSONObject hit = hits.getJSONObject(i).getJSONObject("_source");
+
+                obj.add(hit.getString("title"));
+                obj.add(hit.getString("id"));
+                obj.add(hit.getString("summary"));
+                obj.add("Google News");
+                obj.add("http://www.google.com/images/branding/product/ico/googleg_lodp.ico");
+                obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
+                obj.add(String.valueOf(hit.optInt("retweet_count", 0)));
+                obj.add(hit.getString("fecha"));
+
+                ret.add(obj);
+            }
+
+            return ret;
+        } catch (UnirestException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private ST loadTemplate(String template) {
+        try {
+            return new ST(new String(Files.readAllBytes(Paths
+                    .get(ElasticRepository.class.getResource(template).toURI()))), '$', '$');
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

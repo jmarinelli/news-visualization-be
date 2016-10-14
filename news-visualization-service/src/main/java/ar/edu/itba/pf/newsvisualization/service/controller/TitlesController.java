@@ -21,7 +21,7 @@ import java.util.List;
  * Created by juanjosemarinelli on 4/9/16.
  */
 @RestController
-@RequestMapping(value = "titles")
+@RequestMapping(value = "titles-old")
 public class TitlesController {
 
     private TitlesRepository titlesRepository;

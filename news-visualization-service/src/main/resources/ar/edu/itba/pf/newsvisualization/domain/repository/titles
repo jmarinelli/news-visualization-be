@@ -1,0 +1,31 @@
+{
+    "from" : $offset$, "size" : $limit$,
+    "query": {
+        "filtered": {
+            "query": {
+                "range" : {
+                    "fecha" : {
+                        "gte" : "$from$",
+                        "lt" :  "$to$",
+                        "format": "yyyy-MM-dd"
+                    }
+                }
+            },
+            "filter" : {
+                "and": [
+                    { "match": { "tmp" : "$media$" } },
+                    { "or": [
+                            $trunc(keywords):{k |
+                                $\u007B$ "match": $\u007B$ "title": "$k$" $\u007D$ $\u007D$,
+                                $\u007B$ "match": $\u007B$ "summary": "$k$" $\u007D$ $\u007D$,
+                            }$
+                            $last(keywords):{k |
+                                $\u007B$ "match": $\u007B$ "title": "$k$" $\u007D$ $\u007D$,
+                                $\u007B$ "match": $\u007B$ "summary": "$k$" $\u007D$ $\u007D$
+                            }$
+                        ]}
+                ]
+            }
+        }
+    }
+}
