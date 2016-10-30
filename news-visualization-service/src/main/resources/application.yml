@@ -5,6 +5,26 @@ endpoints:
   health:
     sensitive: false
 spring:
+  profiles: itba
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/
+    username: bigdatanow
+    password: bigdatanow
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+---
+server:
+  port: 8080
+  context-path: /news-visualization/api
+endpoints:
+  health:
+    sensitive: false
+spring:
   profiles: local
   datasource:
     driverClassName: org.postgresql.Driver

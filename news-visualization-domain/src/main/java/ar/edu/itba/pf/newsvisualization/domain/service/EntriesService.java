@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Created by juanjosemarinelli on 2/21/16.
  */
-//@Service
+@Service
 public class EntriesService {
 
     private final Integer bufferSize = 1000;
