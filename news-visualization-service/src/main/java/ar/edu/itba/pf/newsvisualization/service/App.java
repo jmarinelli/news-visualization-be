@@ -43,8 +43,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"ar.edu.itba.pf"})
-@EntityScan(basePackages = {"ar.edu.itba.pf.newsvisualization.domain.model"})
-@EnableJpaRepositories(basePackages = {"ar.edu.itba.pf.newsvisualization.domain.repository"})
 public class App extends WebMvcConfigurerAdapter {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(App.class, args);
