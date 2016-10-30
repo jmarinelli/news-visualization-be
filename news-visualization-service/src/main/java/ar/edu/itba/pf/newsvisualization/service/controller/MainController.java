@@ -32,9 +32,9 @@ public class MainController {
 
     @RequestMapping(method = RequestMethod.GET, value = "titles")
     public List<List<String>> getTitles(@RequestParam String from, @RequestParam String to,
-                                        @RequestParam List<String> keywords, @RequestParam String media,
+                                        @RequestParam List<String> keywords,
                                         @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "0") Integer offset) {
-        return elasticRepository.getTitles(from, to, keywords, media, limit, offset);
+        return elasticRepository.getTitles(from, to, keywords, limit, offset);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "top")

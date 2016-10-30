@@ -13,7 +13,6 @@
             },
             "filter" : {
                 "and": [
-                    { "match": { "tmp" : "$media$" } },
                     { "or": [
                             $trunc(keywords):{k |
                                 $\u007B$ "match": $\u007B$ "title": "$k$" $\u007D$ $\u007D$,
