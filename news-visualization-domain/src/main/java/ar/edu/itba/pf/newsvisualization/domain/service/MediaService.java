@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by juanjosemarinelli on 3/25/16.
  */
-@Service
+//@Service
 public class MediaService {
 
     private EntriesRepository entries;

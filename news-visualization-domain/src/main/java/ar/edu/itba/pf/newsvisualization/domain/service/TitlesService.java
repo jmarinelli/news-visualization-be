@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by juanjosemarinelli on 4/9/16.
  */
-@Service
+//@Service
 public class TitlesService {
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
