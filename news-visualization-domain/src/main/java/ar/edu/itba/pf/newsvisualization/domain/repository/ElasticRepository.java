@@ -7,6 +7,7 @@ import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResp
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.common.collect.Lists;
+import com.google.common.io.Resources;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
@@ -20,6 +21,8 @@ import org.stringtemplate.v4.STGroupDir;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
@@ -166,11 +169,9 @@ public class ElasticRepository {
 
     private ST loadTemplate(String template) {
         try {
-            return new ST(new String(Files.readAllBytes(Paths
-                    .get(ElasticRepository.class.getResource(template).toURI()))), '$', '$');
+            URL url = getClass().getResource(template);
+            return new ST(Resources.toString(url, Charset.defaultCharset()), '$', '$');
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return null;
