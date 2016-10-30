@@ -8,7 +8,7 @@ spring:
   profiles: itba
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/
+    url: jdbc:postgresql://localhost:5432/politica
     username: bigdatanow
     password: bigdatanow
   jpa:
