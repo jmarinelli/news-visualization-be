@@ -89,14 +89,13 @@ public class ElasticRepository {
         return null;
     }
 
-    public List<List<String>> getTop(String from, String to, List<String> keywords, String media,
+    public List<List<String>> getTop(String from, String to, List<String> keywords,
                                         Integer limit, Integer offset) {
         List<List<String>> ret = Lists.newLinkedList();
         ST titles = loadTemplate("top");
 
         titles.add("from", from);
         titles.add("to", to);
-        titles.add("media", media);
         titles.add("keywords", keywords);
         titles.add("limit", limit);
         titles.add("offset", offset);
