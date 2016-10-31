@@ -26,8 +26,8 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
-    public WordCloudResponse getWordCount(@RequestParam String from, @RequestParam String to) {
-        return elasticRepository.getWordCount(from, to);
+    public List<List<Object>> getWordCount(@RequestParam String from, @RequestParam String to) {
+        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(from, to));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "titles")
