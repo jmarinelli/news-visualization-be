@@ -79,6 +79,15 @@ public class ElasticRepository {
         TrendRequest requestBody = new TrendRequest(terms, from, to);
 
         try {
+
+
+            try {
+                System.out.println(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(requestBody));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+
+
             HttpResponse<TrendResponse> response = Unirest.post(BASE_URL).body(requestBody).asObject(TrendResponse.class);
 
             return response.getBody();

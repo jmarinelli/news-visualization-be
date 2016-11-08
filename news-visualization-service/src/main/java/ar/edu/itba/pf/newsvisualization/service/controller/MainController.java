@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -26,15 +27,15 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
-    public List<List<Object>> getWordCount(@RequestParam String from, @RequestParam String to) {
-        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(from, to));
+    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam String date2) {
+        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "titles")
-    public List<List<String>> getTitles(@RequestParam String from, @RequestParam String to,
-                                        @RequestParam List<String> keywords,
+    public List<List<String>> getTitles(@RequestParam String date1, @RequestParam String date2,
+                                        @RequestParam List<String> keyword,
                                         @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "0") Integer offset) {
-        return elasticRepository.getTitles(from, to, keywords, limit, offset);
+        return elasticRepository.getTitles(date1, date2, keyword, limit, offset);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "top")
@@ -45,8 +46,9 @@ public class MainController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "trend")
-    public List<TrendResponseDTO> getWordCount(@RequestParam String from, @RequestParam String to,
-                                              @RequestParam List<String> terms) {
-        return MainTransformer.transformTrendResponse(elasticRepository.getTrends(terms, from, to), terms);
+    public String getWordCount(@RequestParam String date1, @RequestParam String date2,
+                               @RequestParam List<String> keyword, HttpServletResponse response) {
+        response.setContentType("text/plain; charset=utf-8");
+        return MainTransformer.transformTrendResponse(elasticRepository.getTrends(keyword, date1, date2), keyword);
     }
 }

@@ -29,21 +29,29 @@ public class MainTransformer {
         return ret;
     }
 
-    public static List<TrendResponseDTO> transformTrendResponse(TrendResponse resp, List<String> terms) {
-        final List<TrendResponseDTO> ret = Lists.newLinkedList();
+    public static String transformTrendResponse(TrendResponse resp, List<String> terms) {
+        StringBuilder sBuilder = new StringBuilder();
+        sBuilder.append("x,");
+        terms.forEach(t -> sBuilder.append(t).append(",") );
+        sBuilder.deleteCharAt(sBuilder.length() - 1);
+        sBuilder.append(System.getProperty("line.separator"));
 
         if (resp != null) {
             resp.getAggregations().getDayOfWeek().getBuckets().forEach(b -> {
-                String date = b.getDate();
-                List<CountDTO> wordCount = Lists.newLinkedList();
-                terms.forEach(t -> wordCount.add(new CountDTO(t)));
-                b.getTitles().getBuckets().forEach(t -> {
-                    wordCount.stream().filter(w -> w.getWord().equals(t.getKey())).findFirst().orElse(new CountDTO(t.getKey())).setCount(t.getCount());
+                sBuilder.append(b.getDate().split("T")[0]).append(",");
+                terms.forEach(term -> {
+                    sBuilder.append("0,");
+                    b.getTitles().getBuckets().forEach(title -> {
+                        if (term.equals(title.getKey())) {
+                            sBuilder.replace(sBuilder.length() - 2, sBuilder.length(), title.getCount() + ",");
+                        }
+                    });
                 });
-                ret.add(new TrendResponseDTO(date, wordCount));
+                sBuilder.deleteCharAt(sBuilder.length() - 1);
+                sBuilder.append(System.getProperty("line.separator"));
             });
         }
 
-        return ret;
+        return sBuilder.toString();
     }
 }
