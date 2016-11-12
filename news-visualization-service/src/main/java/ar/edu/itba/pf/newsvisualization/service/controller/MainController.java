@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,9 +48,11 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
-    public String getWordCount(@RequestParam String date1, @RequestParam String date2,
-                               @RequestParam List<String> keyword, HttpServletResponse response) {
-        response.setContentType("text/plain; charset=utf-8");
-        return MainTransformer.transformTrendResponse(elasticRepository.getTrends(keyword, date1, date2), keyword);
+    public void getWordCount(@RequestParam String date1, @RequestParam String date2,
+                               @RequestParam List<String> keyword, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json; charset=utf-8");
+
+
+        response.getWriter().print(MainTransformer.transformTrendResponse(elasticRepository.getTrends(keyword, date1, date2), keyword));
     }
 }

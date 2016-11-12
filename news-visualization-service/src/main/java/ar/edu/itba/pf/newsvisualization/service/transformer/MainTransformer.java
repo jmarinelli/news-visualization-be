@@ -1,5 +1,6 @@
 package ar.edu.itba.pf.newsvisualization.service.transformer;
 
+import ar.edu.itba.pf.newsvisualization.domain.model.response.main.ESField;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.main.TrendResponse;
 import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
 import com.google.common.collect.Lists;
@@ -30,6 +31,7 @@ public class MainTransformer {
     }
 
     public static String transformTrendResponse(TrendResponse resp, List<String> terms) {
+        final Integer maxCount = getMaxCount(resp);
         StringBuilder sBuilder = new StringBuilder();
         sBuilder.append("x,");
         terms.forEach(t -> sBuilder.append(t).append(",") );
@@ -43,7 +45,8 @@ public class MainTransformer {
                     sBuilder.append("0,");
                     b.getTitles().getBuckets().forEach(title -> {
                         if (term.equals(title.getKey())) {
-                            sBuilder.replace(sBuilder.length() - 2, sBuilder.length(), title.getCount() + ",");
+                            Integer count = title.getCount() * 100 / maxCount;
+                            sBuilder.replace(sBuilder.length() - 2, sBuilder.length(), count + ",");
                         }
                     });
                 });
@@ -53,5 +56,17 @@ public class MainTransformer {
         }
 
         return sBuilder.toString();
+    }
+
+    private static Integer getMaxCount(TrendResponse resp) {
+        Integer maxCount = Integer.MIN_VALUE;
+
+        for (TrendResponse.ESAggregation.DayOfTheWeek.ESBucket b : resp.getAggregations().getDayOfWeek().getBuckets()) {
+            for (TrendResponse.ESAggregation.DayOfTheWeek.ESBucket.ESField.ESSubBucket t : b.getTitles().getBuckets()) {
+                if (t.getCount() >= maxCount) maxCount = t.getCount();
+            }
+        }
+
+        return maxCount;
     }
 }

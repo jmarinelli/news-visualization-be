@@ -77,6 +77,10 @@ public class TrendResponse {
                         private String key;
                         private Integer count;
 
+                        public ESSubBucket() {
+                            this.count = 0;
+                        }
+
                         public String getKey() {
                             return key;
                         }
