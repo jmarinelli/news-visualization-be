@@ -5,10 +5,7 @@ import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
 import ar.edu.itba.pf.newsvisualization.service.transformer.MainTransformer;
 import ar.edu.itba.pf.newsvisualization.service.transformer.TrendResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -26,11 +23,13 @@ public class MainController {
         this.elasticRepository = elasticRepository;
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
     public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam String date2) {
         return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2));
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "titles")
     public List<List<String>> getTitles(@RequestParam String date1, @RequestParam String date2,
                                         @RequestParam List<String> keyword,
@@ -38,6 +37,7 @@ public class MainController {
         return elasticRepository.getTitles(date1, date2, keyword, limit, offset);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "top")
     public List<List<String>> getTop(@RequestParam String from, @RequestParam String to,
                                         @RequestParam List<String> keywords,
@@ -45,6 +45,7 @@ public class MainController {
         return elasticRepository.getTop(from, to, keywords, limit, offset);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
     public String getWordCount(@RequestParam String date1, @RequestParam String date2,
                                @RequestParam List<String> keyword, HttpServletResponse response) {
