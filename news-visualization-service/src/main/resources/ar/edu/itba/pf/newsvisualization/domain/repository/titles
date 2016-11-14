@@ -10,7 +10,9 @@
                         "format": "yyyy-MM-dd"
                     }
                 }
-            },
+            }
+            $if(keywords)$
+            ,
             "filter" : {
                 "and": [
                     { "or": [
@@ -25,6 +27,7 @@
                         ]}
                 ]
             }
+            $endif$
         }
     }
 }
