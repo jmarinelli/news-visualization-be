@@ -26,29 +26,21 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
-    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam String date2) {
-        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2));
+    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2, @RequestParam List<String> keyword) {
+        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2, keyword));
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "titles")
-    public List<List<String>> getTitles(@RequestParam String date1, @RequestParam String date2,
+    public List<List<String>> getTitles(@RequestParam String date1, @RequestParam(required = false) String date2,
                                         @RequestParam List<String> keyword,
                                         @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "0") Integer offset) {
         return elasticRepository.getTitles(date1, date2, keyword, limit, offset);
     }
 
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.GET, value = "top")
-    public List<List<String>> getTop(@RequestParam String from, @RequestParam String to,
-                                        @RequestParam List<String> keywords,
-                                        @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "0") Integer offset) {
-        return elasticRepository.getTop(from, to, keywords, limit, offset);
-    }
-
-    @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
-    public void getWordCount(@RequestParam String date1, @RequestParam String date2,
+    public void getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
                                @RequestParam List<String> keyword, HttpServletResponse response) throws IOException {
         response.setContentType("application/json; charset=utf-8");
 

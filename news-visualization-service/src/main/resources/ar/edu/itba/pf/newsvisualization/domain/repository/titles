@@ -6,7 +6,7 @@
                 "range" : {
                     "fecha" : {
                         "gte" : "$from$",
-                        "lt" :  "$to$",
+                        "lt" :  "$to$||+1d",
                         "format": "yyyy-MM-dd"
                     }
                 }

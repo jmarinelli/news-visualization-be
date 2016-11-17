@@ -61,11 +61,17 @@ public class ElasticRepository {
         });
     }
 
-    public WordCloudResponse getWordCount(String from, String to) {
-        WordCloudRequest requestBody = new WordCloudRequest(from, to);
+    public WordCloudResponse getWordCount(String from, String to, List<String> keywords) {
+        if (to == null) to = from;
+
+        ST wordCloud = loadTemplate("word-cloud");
+
+        wordCloud.add("from", from);
+        wordCloud.add("to", to);
+        wordCloud.add("keywords", keywords);
 
         try {
-            HttpResponse<WordCloudResponse> response = Unirest.post(BASE_URL).body(requestBody).asObject(WordCloudResponse.class);
+            HttpResponse<WordCloudResponse> response = Unirest.post(BASE_URL).body(wordCloud.render()).asObject(WordCloudResponse.class);
 
             return response.getBody();
         } catch (UnirestException e) {
@@ -76,6 +82,8 @@ public class ElasticRepository {
     }
 
     public TrendResponse getTrends(List<String> terms, String from, String to) {
+        if (to == null) to = from;
+
         TrendRequest requestBody = new TrendRequest(terms, from, to);
 
         try {
@@ -98,44 +106,10 @@ public class ElasticRepository {
         return null;
     }
 
-    public List<List<String>> getTop(String from, String to, List<String> keywords,
-                                        Integer limit, Integer offset) {
-        List<List<String>> ret = Lists.newLinkedList();
-        ST titles = loadTemplate("top");
-
-        titles.add("from", from);
-        titles.add("to", to);
-        titles.add("keywords", keywords);
-        titles.add("limit", limit);
-        titles.add("offset", offset);
-
-        try {
-            HttpResponse<String> response = Unirest.post(BASE_URL).body(titles.render()).asString();
-
-
-            JSONArray hits = new JSONObject(response.getBody()).getJSONObject("hits").getJSONArray("hits");
-            for (int i = 0; i < hits.length(); i++) {
-                List<String> obj = Lists.newLinkedList();
-                JSONObject hit = hits.getJSONObject(i).getJSONObject("_source");
-
-                obj.add(hit.getString("title"));
-                obj.add(hit.getString("id"));
-                obj.add(hit.getString("tmp"));
-                obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
-
-                ret.add(obj);
-            }
-
-            return ret;
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public List<List<String>> getTitles(String from, String to, List<String> keywords,
                                         Integer limit, Integer offset) {
+        if (to == null) to = from;
+
         List<List<String>> ret = Lists.newLinkedList();
         ST titles = loadTemplate("titles");
 
