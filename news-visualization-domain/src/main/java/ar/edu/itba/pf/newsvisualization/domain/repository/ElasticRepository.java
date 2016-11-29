@@ -27,11 +27,9 @@ import java.util.List;
  */
 public class ElasticRepository {
 
-    private final String googleLogo;
     private final String searchUrl;
 
-    public ElasticRepository(String baseUrl, String googleLogo) {
-        this.googleLogo = googleLogo;
+    public ElasticRepository(String baseUrl) {
         this.searchUrl =  baseUrl + "/_search";
     }
 
@@ -104,8 +102,8 @@ public class ElasticRepository {
                 obj.add(hit.getString("summary"));
                 obj.add(hit.getString("nombre"));
                 obj.add(hit.getString("url_favicon"));
-                obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
-                obj.add(String.valueOf(hit.optInt("retweet_count", 0)));
+                obj.add(String.valueOf(0));
+                obj.add(String.valueOf(0));
                 obj.add(hit.getString("fecha"));
 
                 ret.add(obj);

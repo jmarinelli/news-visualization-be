@@ -8,7 +8,6 @@ spring:
   profiles: itba
 elastic:
   baseUrl: http://localhost:9200/jdbc/jdbc
-  googleLogo: http://www.google.com/images/branding/product/ico/googleg_lodp.ico
 ---
 server:
   port: 8080
@@ -20,4 +19,3 @@ spring:
   profiles: local
 elastic:
   baseUrl: http://localhost:9200/jdbc/jdbc
-  googleLogo: http://www.google.com/images/branding/product/ico/googleg_lodp.ico

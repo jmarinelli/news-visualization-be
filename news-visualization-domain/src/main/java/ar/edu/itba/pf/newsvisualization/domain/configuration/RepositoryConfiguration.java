@@ -19,7 +19,6 @@ import java.io.IOException;
 @ConfigurationProperties("elastic")
 public class RepositoryConfiguration {
     private String baseUrl;
-    private String googleLogo;
 
     @PostConstruct
     private void init() {
@@ -50,14 +49,10 @@ public class RepositoryConfiguration {
 
     @Bean
     public ElasticRepository elasticRepository() {
-        return new ElasticRepository(baseUrl, googleLogo);
+        return new ElasticRepository(baseUrl);
     }
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
-    }
-
-    public void setGoogleLogo(String googleLogo) {
-        this.googleLogo = googleLogo;
     }
 }
