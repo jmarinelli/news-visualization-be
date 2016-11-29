@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -25,6 +27,8 @@ import java.util.List;
 @SpringBootApplication
 @EnableAutoConfiguration
 @ComponentScan(basePackages = {"ar.edu.itba.pf"})
+@EntityScan(basePackages = {"ar.edu.itba.pf.newsvisualization.domain.model"})
+@EnableJpaRepositories(basePackages = {"ar.edu.itba.pf.newsvisualization.domain.repository"})
 public class App extends WebMvcConfigurerAdapter {
     public static void main(String[] args) throws Exception {
         SpringApplication.run(App.class, args);
