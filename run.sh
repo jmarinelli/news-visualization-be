@@ -1,4 +1,4 @@
-previous_pid=`cat pid`
+previous_pid=`cat .pid`
 
 if [ ! -z "$previous_pid" ]; then
 	echo "Shuting down running application with pid $previous_pid"
