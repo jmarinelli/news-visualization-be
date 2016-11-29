@@ -102,8 +102,8 @@ public class ElasticRepository {
                 obj.add(hit.getString("title"));
                 obj.add(hit.getString("id"));
                 obj.add(hit.getString("summary"));
-                obj.add("Google News");
-                obj.add(this.googleLogo);
+                obj.add(hit.getString("nombre"));
+                obj.add(hit.getString("url_favicon"));
                 obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
                 obj.add(String.valueOf(hit.optInt("retweet_count", 0)));
                 obj.add(hit.getString("fecha"));
