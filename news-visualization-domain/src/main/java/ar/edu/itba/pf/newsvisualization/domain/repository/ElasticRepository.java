@@ -1,9 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.domain.repository;
 
-import ar.edu.itba.pf.newsvisualization.domain.model.request.TrendRequest;
-import ar.edu.itba.pf.newsvisualization.domain.model.request.WordCloudRequest;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.main.TrendResponse;
-import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.TrendResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.WordCloudResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.common.collect.Lists;
@@ -14,54 +12,30 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.stringtemplate.v4.ST;
-import org.stringtemplate.v4.STGroup;
-import org.stringtemplate.v4.STGroupDir;
 
+import javax.annotation.Resource;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
  * Created by juanjosemarinelli on 9/20/16.
  */
-@Repository
 public class ElasticRepository {
 
-    private static final String BASE_URL = "http://localhost:9200/jdbc/jdbc/_search";
+    private final String googleLogo;
+    private final String searchUrl;
 
-    public ElasticRepository() {
-        final com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
-                = new com.fasterxml.jackson.databind.ObjectMapper();
-
-        jacksonObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        Unirest.setObjectMapper(new ObjectMapper() {
-
-            public <T> T readValue(String value, Class<T> valueType) {
-                try {
-                    return jacksonObjectMapper.readValue(value, valueType);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            public String writeValue(Object value) {
-                try {
-                    return jacksonObjectMapper.writeValueAsString(value);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+    public ElasticRepository(String baseUrl, String googleLogo) {
+        this.googleLogo = googleLogo;
+        this.searchUrl =  baseUrl + "/_search";
     }
 
-    public WordCloudResponse getWordCount(String from, String to, List<String> keywords) {
+    public WordCloudResponse getWordCount(String from, String to, List<String> keywords, Integer limit) {
         if (to == null) to = from;
 
         ST wordCloud = loadTemplate("word-cloud");
@@ -69,41 +43,38 @@ public class ElasticRepository {
         wordCloud.add("from", from);
         wordCloud.add("to", to);
         wordCloud.add("keywords", keywords);
+        wordCloud.add("limit", limit);
 
         try {
-            HttpResponse<WordCloudResponse> response = Unirest.post(BASE_URL).body(wordCloud.render()).asObject(WordCloudResponse.class);
+            HttpResponse<WordCloudResponse> response = Unirest.post(searchUrl).body(wordCloud.render()).asObject(WordCloudResponse.class);
 
             return response.getBody();
         } catch (UnirestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public TrendResponse getTrends(List<String> terms, String from, String to) {
         if (to == null) to = from;
 
-        TrendRequest requestBody = new TrendRequest(terms, from, to);
+        ST requestBody = loadTemplate("trend");
+
+        requestBody.add("from", from);
+        requestBody.add("to", to);
+        requestBody.add("keywords", terms);
 
         try {
+            System.out.println(requestBody.render());
 
 
-            try {
-                System.out.println(new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(requestBody));
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-
-
-            HttpResponse<TrendResponse> response = Unirest.post(BASE_URL).body(requestBody).asObject(TrendResponse.class);
+            HttpResponse<TrendResponse> response = Unirest.post(searchUrl).body(requestBody.render()).asObject(TrendResponse.class);
 
             return response.getBody();
         } catch (UnirestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     public List<List<String>> getTitles(String from, String to, List<String> keywords,
@@ -120,7 +91,7 @@ public class ElasticRepository {
         titles.add("offset", offset);
 
         try {
-            HttpResponse<String> response = Unirest.post(BASE_URL).body(titles.render()).asString();
+            HttpResponse<String> response = Unirest.post(searchUrl).body(titles.render()).asString();
 
 
             JSONArray hits = new JSONObject(response.getBody()).getJSONObject("hits").getJSONArray("hits");
@@ -132,7 +103,7 @@ public class ElasticRepository {
                 obj.add(hit.getString("id"));
                 obj.add(hit.getString("summary"));
                 obj.add("Google News");
-                obj.add("http://www.google.com/images/branding/product/ico/googleg_lodp.ico");
+                obj.add(this.googleLogo);
                 obj.add(String.valueOf(hit.optInt("fb_like_count", 0)));
                 obj.add(String.valueOf(hit.optInt("retweet_count", 0)));
                 obj.add(hit.getString("fecha"));
@@ -143,9 +114,8 @@ public class ElasticRepository {
             return ret;
         } catch (UnirestException e) {
             e.printStackTrace();
+            return null;
         }
-
-        return null;
     }
 
     private ST loadTemplate(String template) {
@@ -154,7 +124,7 @@ public class ElasticRepository {
             return new ST(Resources.toString(url, Charset.defaultCharset()), '$', '$');
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

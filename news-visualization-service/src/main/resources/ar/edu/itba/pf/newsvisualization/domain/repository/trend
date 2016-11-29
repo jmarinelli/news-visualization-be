@@ -1,0 +1,31 @@
+{
+  "query": {
+    "range": {
+      "fecha": {
+        "gte": "$from$",
+        "lte": "$to$||+1d",
+        "format": "yyyy-MM-dd"
+      }
+    }
+  },
+  "aggs": {
+    "dayOfWeek": {
+      "aggs": {
+        "titles": {
+          "terms": {
+            "field": "_all",
+            "include": [
+              $trunc(keywords):{k | "$k$", }$
+              $last(keywords):{k | "$k$" }$
+            ],
+            "size": 2000
+          }
+        }
+      },
+      "date_histogram": {
+        "field": "fecha",
+        "interval": "day"
+      }
+    }
+  }
+}

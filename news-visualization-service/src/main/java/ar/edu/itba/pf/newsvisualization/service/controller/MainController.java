@@ -1,9 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
-import ar.edu.itba.pf.newsvisualization.domain.model.response.main.WordCloudResponse;
 import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
 import ar.edu.itba.pf.newsvisualization.service.transformer.MainTransformer;
-import ar.edu.itba.pf.newsvisualization.service.transformer.TrendResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,15 +24,19 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
-    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2, @RequestParam List<String> keyword) {
-        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2, keyword));
+    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
+                                           @RequestParam(required = false) List<String> keyword,
+                                           @RequestParam(defaultValue = "10", required = false) Integer limit,
+                                           @RequestParam(defaultValue = "1", required = false) Integer minFreq) {
+        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2, keyword, limit), minFreq);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "titles")
     public List<List<String>> getTitles(@RequestParam String date1, @RequestParam(required = false) String date2,
-                                        @RequestParam List<String> keyword,
-                                        @RequestParam(defaultValue = "10") Integer limit, @RequestParam(defaultValue = "0") Integer offset) {
+                                        @RequestParam(required = false) List<String> keyword,
+                                        @RequestParam(defaultValue = "10") Integer limit,
+                                        @RequestParam(defaultValue = "0") Integer offset) {
         return elasticRepository.getTitles(date1, date2, keyword, limit, offset);
     }
 
