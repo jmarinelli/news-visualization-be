@@ -68,6 +68,8 @@ public class ElasticRepository {
 
         try {
 
+            System.out.println(requestBody.render());
+
             HttpResponse<TrendResponse> response = Unirest.post(searchUrl).body(requestBody.render()).asObject(TrendResponse.class);
 
             return response.getBody();
