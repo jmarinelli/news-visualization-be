@@ -8,6 +8,16 @@
       }
     }
   },
+  $if(medios)$
+  "filter": {
+      "terms" : {
+          "medio_id" : [
+            $trunc(medios):{k | "$k$", }$
+            $last(medios):{k | "$k$" }$
+          ]
+      }
+  },
+  $endif$
   "aggs": {
     "dayOfWeek": {
       "aggs": {

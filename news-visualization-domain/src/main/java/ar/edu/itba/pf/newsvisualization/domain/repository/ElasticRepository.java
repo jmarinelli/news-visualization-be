@@ -33,7 +33,8 @@ public class ElasticRepository {
         this.searchUrl =  baseUrl + "/_search";
     }
 
-    public WordCloudResponse getWordCount(String from, String to, List<String> keywords, Integer limit) {
+    public WordCloudResponse getWordCount(String from, String to, List<String> keywords, List<String> medios,
+                                          Integer limit) {
         if (to == null) to = from;
 
         ST wordCloud = loadTemplate("word-cloud");
@@ -42,8 +43,10 @@ public class ElasticRepository {
         wordCloud.add("to", to);
         wordCloud.add("keywords", keywords);
         wordCloud.add("limit", limit);
+        wordCloud.add("medios", medios);
 
         try {
+
             HttpResponse<WordCloudResponse> response = Unirest.post(searchUrl).body(wordCloud.render()).asObject(WordCloudResponse.class);
 
             return response.getBody();
@@ -53,7 +56,7 @@ public class ElasticRepository {
         }
     }
 
-    public TrendResponse getTrends(List<String> terms, String from, String to) {
+    public TrendResponse getTrends(List<String> terms, String from, String to, List<String> medios) {
         if (to == null) to = from;
 
         ST requestBody = loadTemplate("trend");
@@ -61,10 +64,9 @@ public class ElasticRepository {
         requestBody.add("from", from);
         requestBody.add("to", to);
         requestBody.add("keywords", terms);
+        requestBody.add("medios", medios);
 
         try {
-            System.out.println(requestBody.render());
-
 
             HttpResponse<TrendResponse> response = Unirest.post(searchUrl).body(requestBody.render()).asObject(TrendResponse.class);
 
@@ -75,7 +77,7 @@ public class ElasticRepository {
         }
     }
 
-    public List<List<String>> getTitles(String from, String to, List<String> keywords,
+    public List<List<String>> getTitles(String from, String to, List<String> keywords, List<String> medios,
                                         Integer limit, Integer offset) {
         if (to == null) to = from;
 
@@ -87,8 +89,10 @@ public class ElasticRepository {
         titles.add("keywords", keywords);
         titles.add("limit", limit);
         titles.add("offset", offset);
+        titles.add("medios", medios);
 
         try {
+
             HttpResponse<String> response = Unirest.post(searchUrl).body(titles.render()).asString();
 
 
