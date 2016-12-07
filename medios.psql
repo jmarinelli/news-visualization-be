@@ -1,0 +1,144 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: medios; Type: TABLE; Schema: public; Owner: bigdatanow; Tablespace: 
+--
+
+CREATE TABLE medios (
+    id numeric NOT NULL,
+    nombre text,
+    url text,
+    alexa_g numeric,
+    alexa_ar numeric,
+    url_favicon text,
+    tipo text,
+    last date
+);
+
+
+ALTER TABLE public.medios OWNER TO bigdatanow;
+
+--
+-- Data for Name: medios; Type: TABLE DATA; Schema: public; Owner: bigdatanow
+--
+
+COPY medios (id, nombre, url, alexa_g, alexa_ar, url_favicon, tipo, last) FROM stdin;
+82	La Izquierda Diario	http://www.laizquierdadiario.com/	19169	203	http://www.laizquierdadiario.com/favicon.ico	grafico	2016-12-07
+9	Todo Noticias (TN)	http://tn.com.ar	3863	21	http://tn-ar.cdncmd.com/sites/all/themes/leono/images/favicon.ico	cable	2016-12-07
+53	Diario Primera Linea	http://www.diarioprimeralinea.com.ar	560156	-1	http://www.diarioprimeralinea.com.ar/favicon.ico	grafico	2016-12-07
+47	La Voz De Zarate	http://www.diariolavozdezarate.com/	355804	3513	http://www.diariolavozdezarate.com/wp-content/themes/lavoz2012/images/favicon.ico	grafico	2016-12-07
+36	El Eco De Tandil	http://www.eleco.com.ar	80344	474	https://pbs.twimg.com/profile_images/2990806225/bd6aa35381d95a598679ed9fbb6f6e1a.png	grafico	2015-03-26
+25	Canchallena	http://canchallena.lanacion.com.ar/	1033	9	http://canchallena.lanacion.com.ar/favicon.ico	grafico	2016-04-15
+41	La Mañana Neuquen	http://www.lmneuquen.com.ar	97849	905	http://www.lmneuquen.com/favicon.ico	grafico	2015-10-07
+63	Perspectiva Sur	http://www.perspectivasur.com	1288313	-1	https://pbs.twimg.com/profile_images/601724376359239681/NHi8PLPD.png	grafico	2016-12-07
+45	El Diario De La Republica	http://www.eldiariodelarepublica.com/	144303	2423	http://www.eldiariodelarepublica.com/favicon.ico	grafico	2016-12-07
+46	El Ancasti	http://www.elancasti.com.ar	141156	1599	http://www.elancasti.com.ar/favicon.ico	grafico	2016-12-07
+22	La Nueva	http://www.lanueva.com	29536	160	https://pbs.twimg.com/profile_images/509484453190582274/jDl38c5B.png	grafico	2016-12-07
+24	El Tribuno Salta	http://www.eltribuno.info/salta/	37748	283	http://www.eltribuno.info/favicon.ico	grafico	2016-12-07
+66	La Autentica Defensa	http://www.laautenticadefensa.com.ar/	-1	-1	https://pbs.twimg.com/profile_images/267330438/lad_icono_logo.png	grafico	2016-12-07
+17	Info News	http://www.infonews.com/	5898	35	http://static.grupo23.com/infonews-v3/nspaces/infonews/favicon.png?v3.1.095	grafico	2016-05-02
+81	Chequeado	http://chequeado.com/	249559	2070	http://chequeado.com/wp-content/uploads/2015/02/favicon.png	grafico	2016-11-25
+76	Ciudad	http://www.ciudad.com.ar	5039	36	http://ciudad.cdncmd.com/sites/all/themes/ciudad/favicon.ico	grafico	2015-05-11
+6	Página/12	http://pagina12.com.ar	10834	54	http://www.pagina12.com.ar/favicon.ico	grafico	2016-11-15
+65	Nuevo Dia	http://www.diarionuevodia.com.ar	-1	-1	http://www.nuevodiadigital.com/themes/css_3/img/logonuevodia.jpg	grafico	2016-12-07
+68	El Colono Del Oeste	http://www.elcolonodeloeste.com.ar	26278603	-1	http://www.elcolonodeloeste.com.ar/favicon.ico	grafico	2016-12-06
+70	Diario la Mañana	http://www.diariolamanana.com.ar	512920	3933	http://www.diariolamanana.com.ar/icono.png	grafico	2016-12-07
+26	Diario Panorama	http://www.diariopanorama.com	46465	543	http://www.diariopanorama.com/favicon.ico	grafico	2015-06-03
+79	APFDigital	http://www.apfdigital.com.ar/	788144	9929	http://www.apfdigital.com.ar/imagenes/logo.png	grafico	2016-11-29
+1	Buenos Aires Herald	http://www.buenosairesherald.com	132326	3179	http://www.buenosairesherald.com/favicon.ico	grafico	2016-12-04
+73	BHI Diario Bahia Blanca	http://www.bhi.com.ar/	6766582	-1	http://media.bhi.com.ar/favicon.ico	grafico	2015-02-01
+75	Diario San Rafael	http://www.diariosanrafael.com.ar	236591	3944	https://pbs.twimg.com/profile_images/1922660025/diario_san_rafael_copia.jpg	grafico	2016-12-07
+28	Dia A Dia	http://www.diaadia.com.ar	41683	331	http://www.diaadia.com.ar/sites/default/files/favicon.ico	grafico	2016-12-07
+33	El Liberal	http://www.elliberal.com.ar	76415	705	http://www.elliberal.com.ar/favicon.ico	grafico	2016-02-10
+34	Diario La Razon	http://www.larazon.com.ar/	66527	600	http://www.larazon.com.ar/favicon.ico	grafico	2016-12-07
+57	La Opinion Austral	http://www.laopinionaustral.com.ar	586841	-1	https://pbs.twimg.com/profile_images/1139231352/isologoParaFB.jpg	grafico	2016-12-07
+13	Infobae Diario	http://www.infobae.com	1253	12	https://pbs.twimg.com/profile_images/461989812036071424/caNkKb7L.png	grafico	2016-06-05
+10	Ámbito Financiero	http://ambito.com	10992	61	https://pbs.twimg.com/profile_images/419177103590842368/RVA31I6y.png	grafico	2016-12-07
+11	El Cronista	http://www.cronista.com	15737	98	http://www.cronista.com/__export/1285110694000/sites/diarioelcronista/arte/favicon.ico	grafico	2016-12-07
+52	La Opinion Pergamino	http://www.laopinionpergamino.com.ar/	528130	4278	http://www.laopinionpergamino.com.ar/templates/gk_news2/images/favicon.ico	grafico	2015-01-29
+54	El Siglo	http://www.elsigloweb.com	441570	7551	http://www.elsigloweb.com/favicon.ico	grafico	2016-01-31
+44	La Verdad	http://www.laverdadonline.com	133706	829	http://www.laverdadonline.com/favicon.ico	grafico	2015-01-29
+40	Diario el Tiempo	http://www.diarioeltiempo.com.ar	155494	867	https://pbs.twimg.com/profile_images/503840946354524160/3BkFBl01.jpeg	grafico	2016-12-07
+21	La Política Online	http://www.lapoliticaonline.com/	29067	191	http://www.lapoliticaonline.com/0/img/icons/favicon.ico	grafico	2016-12-07
+23	Rio Negro	http://www.rionegro.com.ar	35824	273	http://www.rionegro.com.ar/diario/favicon.ico	grafico	2016-05-01
+55	El Tribuna Digital	http://www.tribunadigital.com.ar	792220	-1	http://www.tribunadigital.com.ar/wp-content/uploads/2014/03/logo-TRIBUNA.jpg	grafico	2016-12-07
+56	Pregon	http://www.pregon.com.ar	1049229	-1	http://www.pregon.com.ar/favicon.ico	grafico	2015-07-22
+14	Ole	http://www.ole.com.ar	2246	16	http://4.bp.blogspot.com/-HHzhChzO38Q/UiT1EL_SmWI/AAAAAAAAJTI/DSRZawWBPq4/s1600/logo-ole.jpg	grafico	2015-09-08
+15	Minuto Uno	http://minutouno.com	4933	22	http://www.minutouno.com//css/150/apple-touch-icon-114x114.png	grafico	2016-12-07
+16	Perfil	http://www.perfil.com	5085	26	http://www.perfil.com/__export/1365010645307/system/modules/com.tfsla.perfil.diario/resources/v1/images/favicon.ico	grafico	2016-08-01
+74	Opinion Ciudadana	http://www.diariopinion.com.ar	450979	6047	http://www.diariopinion.com.ar/img/logo_header.png	grafico	2015-06-15
+2	Clarin	http://www.clarin.com	1053	10	http://www.clarin.com/favicon.ico	grafico	2016-12-07
+3	La Gaceta	http://www.lagaceta.com.ar	22542	523	http://img.lagaceta.com.ar/img/favicon.ico	grafico	2016-12-07
+78	El Diario Argentino	http://www.eldiarioargentino.com/	3834658	-1	http://www.eldiarioargentino.com/versions/v1/images/common/favicon.ico	grafico	2016-10-17
+58	Paralelo 32	http://www.paralelo32.com.ar	1256768	-1	http://www.paralelo32.com.ar/faviconP32.ico	grafico	2016-11-09
+59	El Heraldo	http://www.elheraldo.com.ar	556736	5817	http://www.elheraldo.com.ar/favicon.ico	grafico	2016-05-08
+61	Varela Al Dia	http://www.varelaaldia.com.ar	1557449	-1	http://www.varelaaldia.com.ar/files/logo.jpg	grafico	2015-02-20
+60	El Ojo Digital	http://www.elojodigital.com	3003861	-1	http://www.elojodigital.com/sites/all/themes/responsive/favicon.ico	grafico	2016-12-07
+35	El Litoral	http://www.ellitoral.com.ar/	116112	2522	http://www.ellitoral.com.ar/content/ElLitoral/imagenes/favicon.ico	grafico	2016-12-07
+27	Diario De Cuyo	http://www.diariodecuyo.com.ar	51987	1049	http://www.diariodecuyo.com.ar/favicon.ico	grafico	2015-06-24
+29	El Popular	http://www.elpopular.com.ar	75548	466	http://www.elpopular.com.ar/img/favicon.ico?v=2	grafico	2016-12-07
+30	Uno Entre Rios	http://www.unoentrerios.com.ar	85198	724	http://www.unoentrerios.com.ar/favicon.ico	grafico	2015-01-27
+31	Rating Cero	http://www.ratingcero.com/	12911	65	http://www.ratingcero.com/favicon.ico	grafico	2016-12-07
+32	Uno Santa Fe	http://www.unosantafe.com.ar	65182	578	http://www.unosantafe.com.ar/favicon.ico	grafico	2015-01-27
+4	La Nacion	http://www.lanacion.com.ar	978	11	http://www.lanacion.com.ar/favicon.ico	grafico	2016-12-07
+37	Diario Democracia	http://www.diariodemocracia.com/	130713	857	http://www.diariodemocracia.com/favicon.ico	grafico	2016-12-07
+42	La Manana Cordoba	http://www.lmcordoba.com.ar	118873	1158	http://www.lmcordoba.com.ar/favicon.ico	grafico	2016-05-25
+43	El Sol	http://www.elsol.com.ar/	153922	3719	data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgBAMAAACBVGfHAAAABGdBTUEAALGPC/xhBQAAAC1QTFRFTGlx/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQR/wQRgdeJ1QAAAA50Uk5TAO6rZT6AJwiW2xfOv06Xn5G0AAABYElEQVQoz0WRsWtTcRRGj8nrSwl0sCLZQiaNCCGKFsTlWVFxkWedBAnJ6hQcnURcDXTq4pDQyaFQEaRDERcdBUdBhJeXQB8vOX+Dwy+pd7rfx+Ve7ncAgAfXP7wfcl7xi6ZmJ8la10equlg7N1zVPOgNdfvZ7WvqVQB6+nkMtV1dDIGqzuH1yyG/tAUMzBJ297Ptbv2rOfDTGa9Uy+Sj2ZhIu4S732JNqVgSq6fNYkzPBhOXYe/hF5i45K8Nqlo+Aqh4Rs8WW2rxDqi6YGRKran6AyJLOnbhnmqWEFsEI+6oHhBbMDIFoufqjMiSni0AfmtO1QVPbMBmwobmVJxzwRw601t3dMbAGZsW4Tc9ZuQBDzUNRtaPNCXpmPNH9QoDsyFMtMv9t+0doqZLYEvPxuv036xCvtyH+l2dQkjZsr33ydUAPF6DurQiV3sa9LR/Dvfmvl783v+Pn6O99k7o/gE1hOkWJqSLXwAAAABJRU5ErkJggg==	grafico	2016-12-07
+7	Radio Continental	http://www.continental.com.ar	101874	870	http://www.continental.com.ar/favicon.ico	radio	2016-12-07
+8	Telam	http://www.telam.com.ar	12852	90	http://www.telam.com.ar/assets/favicon.ico	grafico	2016-12-07
+38	Diario Norte	http://www.diarionorte.com	133289	1924	http://www.diarionorte.com/favicon.ico	grafico	2016-12-07
+20	Los Andes	http://www.losandes.com.ar	17426	189	http://www.losandes.com.ar/img/favicon.ico	grafico	2016-12-07
+48	El Diario de Carlos Paz	http://www.eldiariodecarlospaz.com	293807	3494	https://pbs.twimg.com/profile_images/3185083445/aada525a4ca578af78d71ca60a8877a0.jpeg	grafico	2016-12-07
+49	La Prensa	http://laprensa.com.ar	299186	3317	http://laprensa.com.ar/favicon.ico	grafico	2016-12-07
+50	Diario BAE	http://www.diariobae.com	235191	2771	http://www.diariobae.com/wp-content/uploads/2014/09/favicon.ico	grafico	2016-04-26
+51	El Diario CBA	http://www.eldiariocba.com.ar	276463	2077	http://www.eldiariocba.com.ar/favicon.ico	grafico	2015-08-09
+77	Universia Ar	http://www.universia.com.ar/	197606	2842	http://www.universia.com.ar/icon/favicon.ico	grafico	2015-03-16
+71	Diario Extra	http://www.diarioextra.com.ar	10781059	-1	http://www.diarioextra.com.ar/sites/all/themes/v0/favicon.ico	grafico	2016-11-29
+62	Prensa Libre	http://www.prensalibreonline.com.ar	2181444	-1	http://www.elcolonodeloeste.com.ar/favicon.ico	grafico	2015-01-30
+80	Google News	news.google.com.ar	128	2	http://www.google.com/images/branding/product/ico/googleg_lodp.ico	grafico	2016-12-07
+64	Periodico Lea	http://www.periodicolea.com.ar	4801716	-1	http://periodicolea.com.ar/wp-content/themes/periodicolea/favicon.ico	grafico	2015-07-16
+69	Diario Nco	http://www.diarionco.net/	3668468	-1	http://diarionco.net/wp-content/uploads/2016/05/favicon.png	grafico	2016-10-27
+12	El Dia	http://www.eldia.com	13207	72	img/eldia.ico	grafico	2016-11-29
+5	La Voz Del Interior	http://www.lavoz.com.ar	8473	51	http://www.lavoz.com.ar/sites/default/files/favicon_0.ico	grafico	2016-11-28
+18	La Capital	http://www.lacapital.com.ar	13066	70	http://www.lacapital.com.ar/favicon.ico	grafico	2016-12-07
+19	Diario Uno	http://www.diariouno.com.ar	16847	198	http://www.diariouno.com.ar/favicon.ico	grafico	2016-01-06
+\.
+
+
+--
+-- Name: medios_pkey; Type: CONSTRAINT; Schema: public; Owner: bigdatanow; Tablespace: 
+--
+
+ALTER TABLE ONLY medios
+    ADD CONSTRAINT medios_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medios; Type: ACL; Schema: public; Owner: bigdatanow
+--
+
+REVOKE ALL ON TABLE medios FROM PUBLIC;
+REVOKE ALL ON TABLE medios FROM bigdatanow;
+GRANT ALL ON TABLE medios TO bigdatanow;
+GRANT SELECT ON TABLE medios TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

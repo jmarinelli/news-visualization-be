@@ -1,0 +1,65 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: cliente; Type: TABLE; Schema: public; Owner: bigdatanow; Tablespace: 
+--
+
+CREATE TABLE cliente (
+    nombre text,
+    key text NOT NULL,
+    mail text
+);
+
+
+ALTER TABLE public.cliente OWNER TO bigdatanow;
+
+--
+-- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: bigdatanow
+--
+
+COPY cliente (nombre, key, mail) FROM stdin;
+admin	21232f297a57a5a743894a0e4a801fc3	\N
+Proyecto Final	2b9c1508a73a9e713a05420d9887cf13	
+NR	c578d047ef0e857dbbe746bbd98a6060	aaizemberg@itba.edu.ar
+LN	e838a11239a4a9980e6e81f2f5524ec5	aaizemberg@itba.edu.ar
+Clarín	9d32a83fc273a3b72ed880703957f1d3	aaizemberg@itba.edu.ar
+\.
+
+
+--
+-- Name: key; Type: CONSTRAINT; Schema: public; Owner: bigdatanow; Tablespace: 
+--
+
+ALTER TABLE ONLY cliente
+    ADD CONSTRAINT key PRIMARY KEY (key);
+
+
+--
+-- Name: cliente; Type: ACL; Schema: public; Owner: bigdatanow
+--
+
+REVOKE ALL ON TABLE cliente FROM PUBLIC;
+REVOKE ALL ON TABLE cliente FROM bigdatanow;
+GRANT ALL ON TABLE cliente TO bigdatanow;
+GRANT SELECT ON TABLE cliente TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
