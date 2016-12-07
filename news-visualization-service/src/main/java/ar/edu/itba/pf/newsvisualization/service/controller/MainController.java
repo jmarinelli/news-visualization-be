@@ -26,27 +26,32 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
     public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
                                            @RequestParam(required = false) List<String> keyword,
-                                           @RequestParam(defaultValue = "10", required = false) Integer limit,
-                                           @RequestParam(defaultValue = "1", required = false) Integer minFreq) {
-        return MainTransformer.transformWordCloudResponse(elasticRepository.getWordCount(date1, date2, keyword, limit), minFreq);
+                                           @RequestParam(required = false) List<String> medios,
+                                           @RequestParam(defaultValue = "1000", required = false) Integer limit,
+                                           @RequestParam(defaultValue = "1", required = false) Integer minfreq) {
+        return MainTransformer.transformWordCloudResponse(
+                elasticRepository.getWordCount(date1, date2, keyword, medios, limit), minfreq);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "titles")
     public List<List<String>> getTitles(@RequestParam String date1, @RequestParam(required = false) String date2,
                                         @RequestParam(required = false) List<String> keyword,
+                                        @RequestParam(required = false) List<String> medios,
                                         @RequestParam(defaultValue = "10") Integer limit,
                                         @RequestParam(defaultValue = "0") Integer offset) {
-        return elasticRepository.getTitles(date1, date2, keyword, limit, offset);
+        return elasticRepository.getTitles(date1, date2, keyword, medios, limit, offset);
     }
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
     public void getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
-                               @RequestParam List<String> keyword, HttpServletResponse response) throws IOException {
+                             @RequestParam List<String> keyword, @RequestParam(required = false) List<String> medios,
+                             HttpServletResponse response) throws IOException {
         response.setContentType("application/json; charset=utf-8");
 
 
-        response.getWriter().print(MainTransformer.transformTrendResponse(elasticRepository.getTrends(keyword, date1, date2), keyword));
+        response.getWriter().print(MainTransformer.transformTrendResponse(
+                elasticRepository.getTrends(keyword, date1, date2, medios), keyword));
     }
 }
