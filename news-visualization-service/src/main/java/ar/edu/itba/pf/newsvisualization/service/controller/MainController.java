@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +31,14 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "word-cloud")
-    public List<List<Object>> getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
+    public List<List<Object>> getWordCount(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2,
                                            @RequestParam(required = false) List<String> keyword,
                                            @RequestParam(required = false) List<String> medios,
                                            @RequestParam(defaultValue = "1000", required = false) Integer limit,
                                            @RequestParam(defaultValue = "1", required = false) Integer minfreq,
                                            KeyArgument keyArgument) {
+        if (date1 == null) date1 = this.getCurrentDate();
+
         List<String> keywordList = getKeywords(keyword, keyArgument);
         List<String> mediaList = getMedia(medios, keyArgument);
 
@@ -44,12 +48,13 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "titles")
-    public List<List<String>> getTitles(@RequestParam String date1, @RequestParam(required = false) String date2,
+    public List<List<String>> getTitles(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2,
                                         @RequestParam(required = false) List<String> keyword,
                                         @RequestParam(required = false) List<String> medios,
                                         @RequestParam(defaultValue = "10") Integer limit,
                                         @RequestParam(defaultValue = "0") Integer offset,
                                         KeyArgument keyArgument) {
+        if (date1 == null) date1 = this.getCurrentDate();
         List<String> keywordList = getKeywords(keyword, keyArgument);
         List<String> mediaList = getMedia(medios, keyArgument);
 
@@ -58,9 +63,10 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
-    public void getWordCount(@RequestParam String date1, @RequestParam(required = false) String date2,
+    public void getWordCount(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2,
                              @RequestParam List<String> keyword, @RequestParam(required = false) List<String> medios,
                              KeyArgument keyArgument, HttpServletResponse response) throws IOException {
+        if (date1 == null) date1 = this.getCurrentDate();
 
         List<String> keywordList = getKeywords(keyword, keyArgument);
         List<String> mediaList = getMedia(medios, keyArgument);
@@ -68,6 +74,11 @@ public class MainController {
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(MainTransformer.transformTrendResponse(
                 elasticRepository.getTrends(keywordList, date1, date2, mediaList), keywordList));
+    }
+
+    private String getCurrentDate() {
+        Date date = new Date();
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 
     private List<String> getKeywords(List<String> keywords, KeyArgument keyArgument) {
