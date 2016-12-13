@@ -1,6 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.service;
 
-import ar.edu.itba.pf.newsvisualization.domain.repository.ClientRepository;
+import ar.edu.itba.pf.newsvisualization.service.argument.KeyArgumentResolver;
+import ar.edu.itba.pf.newsvisualization.service.argument.KeyInterceptor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
