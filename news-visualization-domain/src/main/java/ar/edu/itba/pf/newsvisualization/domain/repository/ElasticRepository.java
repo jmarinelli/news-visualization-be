@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 import org.stringtemplate.v4.ST;
 
 import javax.annotation.Resource;
@@ -103,16 +104,18 @@ public class ElasticRepository {
                 List<String> obj = Lists.newLinkedList();
                 JSONObject hit = hits.getJSONObject(i).getJSONObject("_source");
 
-                obj.add(hit.getString("title"));
-                obj.add(hit.getString("id"));
-                obj.add(hit.getString("summary"));
-                obj.add(hit.getString("nombre"));
-                obj.add(hit.getString("url_favicon"));
-                obj.add(String.valueOf(0));
-                obj.add(String.valueOf(0));
-                obj.add(hit.getString("fecha"));
+                if (!StringUtils.isEmpty(hit.optString("id"))) {
+                    obj.add(hit.optString("title"));
+                    obj.add(hit.optString("id"));
+                    obj.add(hit.optString("summary"));
+                    obj.add(hit.optString("nombre"));
+                    obj.add(hit.optString("url_favicon"));
+                    obj.add(String.valueOf(0));
+                    obj.add(String.valueOf(0));
+                    obj.add(hit.optString("fecha"));
 
-                ret.add(obj);
+                    ret.add(obj);
+                }
             }
 
             return ret;

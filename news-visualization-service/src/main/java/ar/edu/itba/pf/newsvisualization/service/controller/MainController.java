@@ -48,7 +48,7 @@ public class MainController {
                                         @RequestParam(defaultValue = "0") Integer offset,
                                         KeyArgument keyArgument) {
         this.addDefaultParams(keyword, medios, keyArgument);
-        
+
         return elasticRepository.getTitles(date1, date2, keyword, medios, limit, offset);
     }
 
