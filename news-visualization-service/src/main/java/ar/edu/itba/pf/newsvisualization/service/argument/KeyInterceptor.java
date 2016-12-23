@@ -35,8 +35,8 @@ public class KeyInterceptor extends HandlerInterceptorAdapter {
         Client client = this.clients.findOneByKey(key);
 
         if (client == null) {
-            response.setStatus(400);
-            return false;
+            //response.setStatus(400);
+            //return false;
         }
 
         return super.preHandle(request, response, handler);

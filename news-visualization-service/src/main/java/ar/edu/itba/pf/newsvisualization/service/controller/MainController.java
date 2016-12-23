@@ -1,6 +1,8 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
+import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCategories;
 import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
+import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
 import ar.edu.itba.pf.newsvisualization.service.argument.KeyArgument;
 import ar.edu.itba.pf.newsvisualization.service.transformer.MainTransformer;
 import com.google.common.collect.Lists;
@@ -23,10 +25,12 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "")
 public class MainController {
     private ElasticRepository elasticRepository;
+    private EntriesService entriesService;
 
     @Autowired
-    public MainController(ElasticRepository elasticRepository) {
+    public MainController(ElasticRepository elasticRepository, EntriesService entriesService) {
         this.elasticRepository = elasticRepository;
+        this.entriesService = entriesService;
     }
 
     @CrossOrigin
@@ -74,6 +78,18 @@ public class MainController {
         response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(MainTransformer.transformTrendResponse(
                 elasticRepository.getTrends(keywordList, date1, date2, mediaList), keywordList));
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET, value = "media")
+    public List<String> getMedia() {
+        return entriesService.getMedia();
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET, value = "radars")
+    public List<MediaCategories> getAggregatedMedia(@RequestParam List<String> medias) {
+        return entriesService.getCategories(medias);
     }
 
     private String getCurrentDate() {
