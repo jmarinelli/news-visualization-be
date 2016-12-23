@@ -55,7 +55,6 @@ public class EntriesService {
 
     public List<String> getCategoryList() {
         List<String> retList = entries.getCategories();
-        retList.sort(String.CASE_INSENSITIVE_ORDER);
         return retList;
     }
 }
