@@ -5,14 +5,14 @@ if [ ! -z "$previous_pid" ]; then
 	kill -9 $previous_pid
 fi
 
-echo "Waiting 20 seconds to check application's health"
+echo "Waiting 30 seconds to check application's health"
 sleep 2s
 
 java -Dspring.profiles.active=itba -jar news-visualization.jar &
 pid=$!
 disown
 
-sleep 20s
+sleep 30s
 echo "Checking status..."
 
 status=`curl -s -XGET "http://localhost:9090/news-visualization/api/health" | \
@@ -24,4 +24,4 @@ else
 	echo "Server is DOWN, try again"
 fi
 
-echo $pid > pid
+echo $pid > .pid
