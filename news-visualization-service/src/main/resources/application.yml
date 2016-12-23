@@ -41,3 +41,25 @@ spring:
       ddl-auto: update
 elastic:
   baseUrl: http://localhost:9200/jdbc/jdbc
+---
+server:
+  port: 9090
+  context-path: /news-visualization/api
+endpoints:
+  health:
+    sensitive: false
+spring:
+  profiles: ElLukoHotspot
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/pf
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update
+elastic:
+  baseUrl: http://localhost:9200/jdbc/jdbc
