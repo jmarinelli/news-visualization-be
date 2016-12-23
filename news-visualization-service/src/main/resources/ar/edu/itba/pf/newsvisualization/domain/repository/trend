@@ -10,15 +10,37 @@
               }
             }
         }
-        $if(medios)$
-          ,"filter": {
-              "terms" : {
-                  "medio_id" : [
-                    $trunc(medios):{k | "$k$", }$
-                    $last(medios):{k | "$k$" }$
-                  ]
-              }
-          }
+        $if(keywords || medios)$
+        ,
+        "filter" : {
+            "and": [
+                $if(keywords)$
+                { "or": [
+                        $trunc(keywords):{k |
+                            $\u007B$ "match": $\u007B$ "title": "$k$" $\u007D$ $\u007D$,
+                            $\u007B$ "match": $\u007B$ "summary": "$k$" $\u007D$ $\u007D$,
+                        }$
+                        $last(keywords):{k |
+                            $\u007B$ "match": $\u007B$ "title": "$k$" $\u007D$ $\u007D$,
+                            $\u007B$ "match": $\u007B$ "summary": "$k$" $\u007D$ $\u007D$
+                        }$
+                    ]}
+                $endif$
+                $if(keywords && medios)$
+                ,
+                $endif$
+                $if(medios)$
+                {
+                    "terms" : {
+                          "medio_id" : [
+                            $trunc(medios):{k | "$k$", }$
+                            $last(medios):{k | "$k$" }$
+                          ]
+                      }
+                }
+                $endif$
+            ]
+        }
         $endif$
     }
   },
