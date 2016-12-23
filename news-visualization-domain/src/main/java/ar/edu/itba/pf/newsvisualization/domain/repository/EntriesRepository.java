@@ -10,7 +10,7 @@ import java.util.List;
  * Created by lmoscovicz on 12/23/16.
  */
 public interface EntriesRepository extends CrudRepository<Entry, String> {
-    @Query(value = "SELECT COUNT(*), e.tmp, e.seccion FROM entries e WHERE e.tmp IS NOT NULL GROUP BY e.tmp, e.seccion HAVING e.tmp in ?1")
+    @Query(value = "SELECT COUNT(*), e.tmp, e.seccion FROM entries e WHERE e.source LIKE '%news.google.com%' GROUP BY e.tmp, e.seccion HAVING e.tmp in ?1")
     List<Object[]> getMediaCategories(List<String> medias);
 
     @Query(value = "SELECT DISTINCT(tmp) FROM entries")
