@@ -2,6 +2,7 @@ package ar.edu.itba.pf.newsvisualization.domain.repository;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.TrendResponse;
 import ar.edu.itba.pf.newsvisualization.domain.model.WordCloudResponse;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.NewsCountResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.common.collect.Lists;
@@ -33,6 +34,25 @@ public class ElasticRepository {
 
     public ElasticRepository(String baseUrl) {
         this.searchUrl =  baseUrl + "/_search";
+    }
+
+    public NewsCountResponse getNewsCount(String date, List<String> medios) {
+        ST newsCount = loadTemplate("news-count");
+
+        newsCount.add("date", date);
+        newsCount.add("medios", medios);
+
+        try {
+
+            HttpResponse<String> response = Unirest.post(searchUrl).body(newsCount.render()).asString();
+
+            JSONObject hits = new JSONObject(response.getBody()).getJSONObject("hits");
+
+            return new NewsCountResponse(hits.optInt("total", 0));
+        } catch (UnirestException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public WordCloudResponse getWordCount(String from, String to, List<String> keywords, List<String> medios,
@@ -69,8 +89,6 @@ public class ElasticRepository {
         requestBody.add("medios", medios);
 
         try {
-
-            System.out.println(requestBody.render());
 
             HttpResponse<TrendResponse> response = Unirest.post(searchUrl).body(requestBody.render()).asObject(TrendResponse.class);
 

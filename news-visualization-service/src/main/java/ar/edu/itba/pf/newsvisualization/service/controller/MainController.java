@@ -1,6 +1,7 @@
 package ar.edu.itba.pf.newsvisualization.service.controller;
 
 import ar.edu.itba.pf.newsvisualization.domain.model.response.MediaCategories;
+import ar.edu.itba.pf.newsvisualization.domain.model.response.NewsCountResponse;
 import ar.edu.itba.pf.newsvisualization.domain.repository.ElasticRepository;
 import ar.edu.itba.pf.newsvisualization.domain.service.EntriesService;
 import ar.edu.itba.pf.newsvisualization.service.argument.KeyArgument;
@@ -91,6 +92,17 @@ public class MainController {
     @RequestMapping(method = RequestMethod.GET, value = "radars")
     public List<MediaCategories> getAggregatedMedia(@RequestParam List<String> medias) {
         return entriesService.getCategories(medias);
+    }
+
+    @CrossOrigin
+    @RequestMapping(method = RequestMethod.GET, value = "news-count")
+    public NewsCountResponse getNewsCount(@RequestParam(required = false) String date,
+                                          @RequestParam(required = false) List<String> medios, KeyArgument keyArgument) {
+        if (date == null) date = this.getCurrentDate();
+
+        List<String> mediaList = getMedia(medios, keyArgument);
+
+        return elasticRepository.getNewsCount(date, mediaList);
     }
 
     private String getCurrentDate() {

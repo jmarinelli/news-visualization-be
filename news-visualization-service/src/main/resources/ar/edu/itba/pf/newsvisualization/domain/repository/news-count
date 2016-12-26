@@ -1,0 +1,30 @@
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "and": [
+          {
+            "range": {
+              "fecha": {
+                "gte": "$date$",
+                "lt": "$date$||+1d",
+                "format": "yyyy-MM-dd"
+              }
+            }
+          }
+          $if(medios)$
+          ,
+          {
+            "terms": {
+              "medio_id": [
+                $trunc(medios):{k | "$k$", }$
+                $last(medios):{k | "$k$" }$
+              ]
+            }
+          }
+          $endif$
+        ]
+      }
+    }
+  }
+}
