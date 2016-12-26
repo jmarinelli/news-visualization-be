@@ -104,9 +104,7 @@ public class MainController {
         if (!CollectionUtils.isEmpty(keywords)) keywordList.addAll(keywords);
 
         keywordList.addAll(keyArgument.getDefaultKeywords());
-        return keywordList.stream().map(k ->
-                Normalizer.normalize(k, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase()
-        ).collect(Collectors.toList());
+        return keywordList.stream().map(k -> k.toLowerCase()).collect(Collectors.toList());
     }
 
     private List<String> getMedia(List<String> media, KeyArgument keyArgument) {
