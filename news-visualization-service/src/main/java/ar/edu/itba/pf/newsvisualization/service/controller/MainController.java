@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = "")
 public class MainController {
+
     private ElasticRepository elasticRepository;
     private EntriesService entriesService;
 
@@ -67,7 +68,7 @@ public class MainController {
 
     @CrossOrigin
     @RequestMapping(method = RequestMethod.GET, value = "trend")
-    public void getWordCount(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2,
+    public void getTrend(@RequestParam(required = false) String date1, @RequestParam(required = false) String date2,
                              @RequestParam List<String> keyword, @RequestParam(required = false) List<String> medios,
                              KeyArgument keyArgument, HttpServletResponse response) throws IOException {
         if (date1 == null) date1 = this.getCurrentDate();
@@ -103,7 +104,9 @@ public class MainController {
         if (!CollectionUtils.isEmpty(keywords)) keywordList.addAll(keywords);
 
         keywordList.addAll(keyArgument.getDefaultKeywords());
-        return keywordList.stream().map(k -> Normalizer.normalize(k, Normalizer.Form.NFD)).collect(Collectors.toList());
+        return keywordList.stream().map(k ->
+                Normalizer.normalize(k, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase()
+        ).collect(Collectors.toList());
     }
 
     private List<String> getMedia(List<String> media, KeyArgument keyArgument) {
